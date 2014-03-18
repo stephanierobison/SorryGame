@@ -61,18 +61,18 @@ public class Deck {
 	}//toString
 
 
-	 /**
-     * Uses random number generator to move through the deck and shuffle it.
-     */
-    public void shuffle() {
-        Random random = new Random();
-        for (int i = deck.size(); i > 0; i--) {
-            int movedCardIndex = random.nextInt(i);
-            Card card = deck.get(movedCardIndex);
-            deck.add((i), card);
-            deck.remove(movedCardIndex);
-        }//for
-    }// shuffle
+		 /**
+	     * Uses random number generator to move through the deck and shuffle it.
+	     */
+	    public void shuffle() {
+	        Random random = new Random();
+	        for (int i = deck.size(); i > 0; i--) {
+	            int movedCardIndex = random.nextInt(i);
+	            Card card = deck.get(movedCardIndex);
+	            deck.add((i), card);
+	            deck.remove(movedCardIndex);
+	        }//for
+	    }// shuffle
 
 /**
  * CARD (edited to fit Sorry! criteria from a previous function for cs 110)
@@ -80,19 +80,21 @@ public class Deck {
  */           
 	public static class Card {
 	   	private int rank;
+		private int theRank:
+		private String direction;
 
-	    public Card(Integer rank) {
-	    	setRank(rank);
+		public Card(Integer rank) {
+	    		setRank(rank);
 		}//Card
 
 		public void setRank(int rank) {
 			this.rank = rank;
-	    }//setRank
+	    	}//setRank
 
 		public int getRank() {
 			return rank;
-	    }//getRank
-				public String getDirections() {
+	    	}//getRank
+		public String getDirections() {
 			theRank = getRank();
 			
 			if (theRank == 0){
@@ -140,7 +142,7 @@ public class Deck {
 				direction = "Move a pawn 12 spaces forward.";
 			}
 
-			return direction;
+		return direction;
 				
 			
 		}
