@@ -34,7 +34,7 @@ public class Deck {
     public Card getCard() {
         ListIterator<Card> deckIterator = deck.listIterator();
         
-		if (deckIterator.hasNext()){
+	if (deckIterator.hasNext()){
             topCard = deckIterator.next();
             deckIterator.remove();
         }//if
