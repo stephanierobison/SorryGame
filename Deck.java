@@ -53,7 +53,7 @@ public class Deck {
 	*/
 	public String toString() {
 		StringBuilder deckString = new StringBuilder();
-			for (Card theDeck : deck) {
+		for (Card theDeck : deck) {
 	            String nextCard = theDeck.toString();
 	            deckString.append(nextCard).append(" ");
 	        }//for
