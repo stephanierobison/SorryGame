@@ -1,0 +1,37 @@
+========================================================
+To Do:
+========================================================
++ Master Git :) - WORKING ON J,M,S
+
++ Refactor Caucus Race and associated classes for MVC encapsulization in applet- WORKING ON J
+
++ Start web applets for main UI pages (Layout, button listeners working, etc. but no integrated functionality yet)
+	+ Main Menu
+	+ Setup Screen
+	+ Instructions Screen
+	+ Statistics Screen
+	
++ Make Player Object
+
++ Start Sequence of Play Loop Logic (see design document)
+	+ Cycle through players
+	+ Have each player draw a card from a deck on their turn
+	+ If deck runs out - handle
+
++ Update Deck/Card Objects with move values and string instructions
+
++ Make SQL DB schema for player statistics
+
++ Visual theme poll - WORKING ON J
+
++ Improve Pawn Sprite Handler (?) - this is for me if done at all J
+
+========================================================
+Finished Tasks:
+========================================================
++ Create Deck Object - DONE S
++ Create Card Object - DONE S
++ Create Grid Click Handler - DONE J
++ Create Board Object - DONE J
++ Create Token / Pawn Objects - DONE J
+
