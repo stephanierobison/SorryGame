@@ -1,31 +1,41 @@
 import java.util.*; 
 
 /**
-   The board class is a multiply linked list of Space
-   objects. The actual objects are stored in an 
-   ArrayList to permit immediate references. (Not sure
-   how that will work out..)
+   SimpleBoard is the standard SORRY
+   16 x 16 board with branches to enter
+   start and safe areas for up to four
+   players. It is intended to be used
+   with the SimpleRules extension of
+   the Ruleset object.
    
-   For now each different configuration will be done 
-   manually using a make() method. I hope to later
-   change this to:
-   1. Read from file 
-   2. Use GUI editor
+   FOR NOW IS JUST A TRACK AROUND THE
+   EDGE OF THE BOARD.
 */
 
 public class SimpleBoard extends Board{
-   
+//*************************************************************************
+// CONSTANTS
+//*************************************************************************   
+
    public static final int ROWS = 16;
    public static final int COLUMNS = 16;
    public static final int N = (2 * ROWS) + (2 * COLUMNS) - 4;
-   //private ArrayList<Space> spaces;
-   
+
+//*************************************************************************
+// CONSTRUCTOR
+//*************************************************************************   
    public SimpleBoard(){
       spaces = new ArrayList<Space>();
       make();
     }
-   
-   public void make(){
+//*************************************************************************
+// PRIVATE METHODS
+//*************************************************************************   
+   /*
+     At this point the default board is hard coded manually,
+     not generated procedurally. 
+   */   
+   protected void make(){
       // make spaces and add forwards links
       spaces.add(new Space("0"));
       for (int i = 1; i <= N-1; i++){
@@ -61,9 +71,11 @@ public class SimpleBoard extends Board{
         
    }// end of make()
    
-
-   
-   // TEST
+//*************************************************************************
+// TEST
+//*************************************************************************
+   /* Simply creates and prints toString representation
+      for human testing */
    public static void main(String [ ] args){
       SimpleBoard b = new SimpleBoard();
       System.out.println(b.toString());
@@ -74,7 +86,7 @@ public class SimpleBoard extends Board{
 
 
 
-// JUNK
+// SCRIPS AND SCRAPS
 /*
             else if (i == 2)
                spaces.get(index).setXY((N/4) - 1 - j,(N/4) - 1);         

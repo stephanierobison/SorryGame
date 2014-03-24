@@ -1,73 +1,82 @@
 import java.util.*; 
 
 /**
-   The board class is a multiply linked list of Space
+   The board class is a contains a graph of Space
    objects. The actual objects are stored in an 
-   ArrayList to permit immediate references. (Not sure
-   how that will work out..)
+   ArrayList Adjacency List.
    
-   For now each different configuration will be done 
-   manually using a make() method. I hope to later
+   Methods are provided to allow:
+   +  Searching the Board for a particular Space
+      (by x,y index or adjacency list location)
+   +  Get all Token objects "on" Board Spaces
+   +  Represent the board as a String
+   
+   Subclasses must provide provisions to:
+   +  Actually build the graph 
+   
+   Note that the board is intended to be relatively
+   static: made once, used, and then disposed of.
+   As such no methods have been provided to aid in
+   on the fly mutation of the graph.
+   
+   @see Space
+
+*/
+
+public abstract class Board{
+
+//*************************************************************************
+// INSTANCE VARIABLES
+//*************************************************************************   
+   /**
+      The adjacency list describing the graph. Note that the individual
+      Space objects own their own neighbor lists.
+   */
+   protected ArrayList<Space> spaces; // want subclasses to inherit, but no public access
+   
+//*************************************************************************
+// PUBLIC METHODS
+//*************************************************************************   
+//-------------------------------------------------------------------------
+
+/*   
+   For now each different configuration will be hard 
+   coded using a make() method. I hope to later
    change this to:
    1. Read from file 
    2. Use GUI editor
 */
+   protected abstract void make();
 
-public abstract class Board{
+//-------------------------------------------------------------------------
    
-   //private ArrayList<Space> spaces;
-   protected ArrayList<Space> spaces; // want subclasses to inherit, but no public access
-   
-   public abstract void make();
-   
-   
-   //recursivly determines all possible forwards moves
-   // should probably make iterative somehow for speed..
-   public ArrayList<Space> getTargetsForward(Space s, int n){
-      ArrayList<Space> result = new ArrayList<Space>();
-      if (n == 0){
-         if (s.isEmpty()) // can only land on empty spaces
-            result.add(s);
-      }
-      else {
-         ArrayList<Space> fn = s.getForwardsNeighbors();
-         for (int i = 0; i < fn.size(); i++){
-            ArrayList<Space> fn2 = getTargetsForward(fn.get(i), (n - 1) );
-            result.addAll(fn2);
-         }
-      }
-         
-         
-      return result;
-   
-   }// end of getTargetsF
-   
-   //recursivly determines all possible BACKWARDS moves
-   // should probably make iterative somehow for speed..
-   public ArrayList<Space> getTargetsBack(Space s, int n){
-      ArrayList<Space> result = new ArrayList<Space>();
-      if (n == 0){
-         if (s.isEmpty()) // can only land on empty spaces
-            result.add(s);
-      }
-      else {
-         ArrayList<Space> fn = s.getBackwardsNeighbors();
-         for (int i = 0; i < fn.size(); i++){
-            ArrayList<Space> fn2 = getTargetsBack(fn.get(i), (n - 1) );
-            result.addAll(fn2);
-         }
-      }
-         
-         
-      return result;
-   
-   }// end of getTargetsF
-   
+   /**
+      @param   int   An integer value n
+      @return  Space The Space object at index
+                     n in the adjacency list.
+   */
    public Space getByIndex(int n){
-      return spaces.get(n);
+      Space result = null;
+      if (n >= spaces.size())
+           throw new IndexOutOfBoundsException();
+      else
+         result = spaces.get(n);
+      return result;
    }
-   
-   // finds a space by it's XY coordinates
+ 
+//-------------------------------------------------------------------------
+  
+   /**
+      @param   int   The x coordinate of the desired Space
+      @param   int   The y coordinate of the desired Space
+      @return  Space The last Space in the adjacency list
+                     with the desired x,y coordinates, NULL
+                     otherwise.
+      
+      Note that this method implicitly assumes that Space
+      objects will e given unique x,y coordinates although
+      it will function for non-unique coordinates.
+   */   
    public Space getSpace(int x, int y){
       Space result = null;
       Space currentSpace;
@@ -80,27 +89,40 @@ public abstract class Board{
       
       return result;
    }// end getSpace(int, int)
+
+//-------------------------------------------------------------------------
   
-   // find all tokens
+   /**
+      @return  ArrayList<Token>  All of the Token objects "on" the
+                                 Space objects in this Board.
+   */
    public ArrayList<Token> getTokens(){
       ArrayList<Token> result = new ArrayList<Token>();
       Token currentToken;
-      for (int i = 0; i < spaces.size(); i++){
+      for (int i = 0; i < spaces.size(); i++){     // Step through adjacency list
          currentToken = spaces.get(i).getToken();
            if (currentToken != null)
               result.add(currentToken);
       }
       return result;
-   }
+   }// end getTokens()
+
+//-------------------------------------------------------------------------
    
+   /**   
+      @return  String   The String representation of this
+                        Board: the String representation of
+                        each Space in the adjacency list by
+                        index order each on it's own line.
+      @see     Space
+   */
    public String toString(){
-      //System.out.println(spaces);
       StringBuilder s = new StringBuilder();
       for (int i = 0; i < spaces.size(); i++){
          s.append(spaces.get(i).toString() + "\n");
       }
       return s.toString();   
-   }
+   }// end of toString()
 
-
-}
+//-------------------------------------------------------------------------
+}// end of Board
