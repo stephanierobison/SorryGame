@@ -24,6 +24,15 @@ import java.util.*;
 */
 
 public abstract class Board{
+//*************************************************************************
+// CONSTANTS
+//************************************************************************* 
+   public static final int DEFAULT_ROWS = 16;
+   public static final int DEFAULT_COLUMNS = 16;
+   
+   public final int ROWS;// = 16;
+   public final int COLUMNS;// = 16;
+   public final int N;// = (2 * ROWS) + (2 * COLUMNS) - 4;
 
 //*************************************************************************
 // INSTANCE VARIABLES
@@ -33,6 +42,21 @@ public abstract class Board{
       Space objects own their own neighbor lists.
    */
    protected ArrayList<Space> spaces; // want subclasses to inherit, but no public access
+
+//*************************************************************************
+// CONSTRUCTORS
+//*************************************************************************   
+   public Board(){
+      this(DEFAULT_ROWS,DEFAULT_COLUMNS);
+    }
+
+   public Board(int r, int c){
+      ROWS = r;
+      COLUMNS = c;
+      N = (2 * ROWS) + (2 * COLUMNS) - 4;
+      spaces = new ArrayList<Space>();
+      make();
+    }
    
 //*************************************************************************
 // PUBLIC METHODS

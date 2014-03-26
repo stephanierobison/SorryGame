@@ -17,17 +17,19 @@ public class SimpleBoard extends Board{
 // CONSTANTS
 //*************************************************************************   
 
-   public static final int ROWS = 16;
-   public static final int COLUMNS = 16;
-   public static final int N = (2 * ROWS) + (2 * COLUMNS) - 4;
-
 //*************************************************************************
 // CONSTRUCTOR
 //*************************************************************************   
-   public SimpleBoard(){
+  /* public SimpleBoard(){
+      ROWS = 16;
+      COLUMNS = 16;
+      N = (2 * ROWS) + (2 * COLUMNS) - 4;
       spaces = new ArrayList<Space>();
       make();
-    }
+    }*/
+    /*public SimpleBoard(int rows, int columns){
+      super(rows, columns);
+    }*/
 //*************************************************************************
 // PRIVATE METHODS
 //*************************************************************************   

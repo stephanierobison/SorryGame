@@ -150,45 +150,6 @@ public class CaucusRace extends JFrame{
 
 //PRIVATE CLASSES-------------------------------------------------------------
 	private class myCanvas extends JPanel{
-		public void paintComponent(Graphics g){
-
-         
-         
-         super.paintComponent(g);
-         
-         
-//         int panelX = animCanvas.getWidth();
-//         int panelY = animCanvas.getHeight();
-         int panelX = getWidth();
-         int panelY = getHeight();   
-         int boxWidth = panelX / NUMBER_COLUMNS;
-         int boxHeight = panelY / NUMBER_ROWS;
-         setSize((boxWidth*NUMBER_COLUMNS)+1, (boxHeight * NUMBER_ROWS)+1);
-         setBackground(Color.black);
-			
-         //draw column dividers
-         for(int i = 0; i <= NUMBER_COLUMNS; i++){
-            g.setColor(Color.blue);
-            g.drawLine(i * boxWidth, 0,
-                        i * boxWidth, panelY);
-         }
-			
-         //draw row dividers
-         for(int i = 0; i <= NUMBER_ROWS; i++){
-            g.setColor(Color.green);
-            g.drawLine(0, i * boxHeight,
-                        panelX, i * boxHeight);
-         }
-        
-         // draw pawns
-         drawPawns(g);
-         
-         drawMoves(g);
-        
-        
-        //System.out.println("Paint Component");
-         
-	   }	
 	}// end of myCanvas
 
 //LISTENERS----------------------------------------------------------------
