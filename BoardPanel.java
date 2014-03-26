@@ -52,6 +52,12 @@ public class BoardPanel extends JPanel{
       selectedPawn = p;
       updateTargets(); 
    }// end of selectPawn(Pawn)
+   
+   
+   public void deselectPawn(){
+      selectedPawn = null;
+      updateTargets();
+   }
 
 //-------------------------------------------------------------------------
    
@@ -162,7 +168,7 @@ public class BoardPanel extends JPanel{
 //-------------------------------------------------------------------------
 //GRID STUFF---------------------------------------------------------------
 
-   private void getGridCoords(int x, int y){
+   public void getGridCoords(int x, int y){
       // Zero index grid of boxes divying up panel evenly
       // in NUMBER_COLUMNS & NUMBER_ROWS
       int panelX = this.getWidth();
@@ -174,14 +180,14 @@ public class BoardPanel extends JPanel{
       System.out.println("Bow Column, Row = " + columnNumber + ", " + rowNumber);
    }
    
-   private int getGridX(int x){
+   public int getGridX(int x){
       int panelX = this.getWidth();
       int boxWidth = panelX / NUMBER_COLUMNS;
       int columnNumber = (x / boxWidth);
       return columnNumber;
    }
    
-   private int getGridY(int y){
+   public int getGridY(int y){
       int panelY = this.getHeight();
       int boxHeight = panelY / NUMBER_ROWS;
       int rowNumber = (y / boxHeight);
@@ -189,28 +195,28 @@ public class BoardPanel extends JPanel{
    }
    
    // grid coords -> pixel coords
-   private int getLowPixelX(int x){
+   public int getLowPixelX(int x){
       int panelX = this.getWidth();
       int boxWidth = panelX / NUMBER_COLUMNS;
       //int columnNumber = (x / boxWidth);
       return boxWidth * x;      
    }
 
-   private int getHighPixelX(int x){
+   public int getHighPixelX(int x){
       int panelX = this.getWidth();
       int boxWidth = panelX / NUMBER_COLUMNS;
       //int columnNumber = (x / boxWidth);
       return boxWidth * (x + 1);      
    }
    
-   private int getLowPixelY(int y){
+   public int getLowPixelY(int y){
       int panelY = this.getHeight();
       int boxHeight = panelY / NUMBER_ROWS;
       //int rowNumber = (y / boxHeight);
       return boxHeight * y;
    }
    
-   private int getHighPixelY(int y){
+   public int getHighPixelY(int y){
       int panelY = this.getHeight();
       int boxHeight = panelY / NUMBER_ROWS;
       //int rowNumber = (y / boxHeight);
