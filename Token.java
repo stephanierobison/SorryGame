@@ -32,7 +32,7 @@ public abstract class Token{
       return iAmOn;
    }
    
-   abstract void drawMe(Graphics g, int xLow, int yLow, int xHigh, int yHigh, Color c, double scale);
-   abstract void drawMe(Graphics g, int xLow, int yLow, int xHigh, int yHigh, Color c);
+   abstract void drawMe(Graphics g, int xLow, int yLow, int xHigh, int yHigh, double scale);
+   abstract void drawMe(Graphics g, int xLow, int yLow, int xHigh, int yHigh);
 
 }

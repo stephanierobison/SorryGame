@@ -50,17 +50,28 @@ public class BoardPanel extends JPanel{
 //-------------------------------------------------------------------------
    public void selectPawn(Pawn p){
       selectedPawn = p;
-      updateTargets(); 
+      //updateTargets(); 
    }// end of selectPawn(Pawn)
    
    
    public void deselectPawn(){
       selectedPawn = null;
-      updateTargets();
+      //updateTargets();
+   }
+   
+   public Pawn getSelectedPawn(){
+      return selectedPawn;
+   }
+   
+   public boolean isPawnSelected(){
+      boolean result = false;
+      if (selectedPawn != null)
+         result = true;
+      return result;
    }
 
 //-------------------------------------------------------------------------
-   
+   /*
    private void updateTargets(){ // update valid move targets for a newly selected pawn
       int [] moves = game.getMoves();
       Ruleset rules = game.getRules();
@@ -80,7 +91,7 @@ public class BoardPanel extends JPanel{
       }
       else
          this.targetSpaces = null;
-  }
+  }*/
         
 //-------------------------------------------------------------------------
   
@@ -114,11 +125,33 @@ public class BoardPanel extends JPanel{
    		g.drawLine(0, i *	boxHeight,
    						panelX, i *	boxHeight);
       }
+      
+      
+      // DO USING INSTANCE VARIABLES TO REDUCE ON THE FLY COMPUTATION?
       	  
-		drawPawns(g);
-		
-		drawMoves(g);
-	  
+		drawTokens(g);
+      
+      //highlightSpace(g, 0 ,0); // TEST ONLY
+      
+       
+		// If a pawn is selected then highlight it and it's target move spaces
+      if (selectedPawn != null){
+         highlightSpace(g, selectedPawn.whereAmI());
+         ArrayList<Space> targets = game.getAllTargets(selectedPawn);
+         for (int i = 0; i < targets.size(); i++){
+            highlightSpace(g, targets.get(i));
+         }
+      }
+      // otherwise highlight all selectable pawns
+      else{
+         ArrayList<Pawn> moveablePawns = game.getMoveablePawns();
+         for (int i = 0; i < moveablePawns.size(); i++){
+            highlightSpace(g, moveablePawns.get(i).whereAmI());
+         }         
+      
+      }
+		//drawMoves(g);
+
 	  
 	  //System.out.println("Paint	Component");
 		
@@ -128,6 +161,8 @@ public class BoardPanel extends JPanel{
 
 
 //-------------------------------------------------------------------------
+   
+   /*
    private void drawMoves(Graphics g){
       //System.out.println(moves);
       if ((targetSpaces != null) && (selectedPawn != null) ){ // only show moves if available and pawn is selected
@@ -146,10 +181,10 @@ public class BoardPanel extends JPanel{
          
          }
       }
-   }// end of drawMoves
+   }// end of drawMoves*/
 //-------------------------------------------------------------------------
-   private void drawPawns(Graphics g){
-      ArrayList<Token> tokens = game.getBoard().getTokens();
+   private void drawTokens(Graphics g){
+      ArrayList<Token> tokens = game.getTokens();
       Token currentToken;
       int gridX, xLow, xHigh;
       int gridY, yLow, yHigh;
@@ -161,10 +196,25 @@ public class BoardPanel extends JPanel{
          xHigh = getHighPixelX(gridX);  
          yLow = getLowPixelY(gridY);
          yHigh = getHighPixelY(gridY);
-         currentToken.drawMe(g, xLow, yLow, xHigh, yHigh, DEFAULT_TOKEN_COLOR, FILL_SCALE);  
+         currentToken.drawMe(g, xLow, yLow, xHigh, yHigh, FILL_SCALE);  
       }      
       
    } // end drawPawns
+   
+   
+   private void highlightSpace(Graphics g, Space s){
+      highlightSpace(g, s.getX(), s.getY());
+   }
+   
+   private void highlightSpace(Graphics g, int x, int y){
+      int xLow = getLowPixelX(x);
+      int xHigh = getHighPixelX(x);  
+      int yLow = getLowPixelY(y);
+      int yHigh = getHighPixelY(y);
+      g.setColor(Color.pink);                   // NEED TO CHANGE
+      g.drawRect(xLow + 1,yLow + 1,xHigh - xLow - 1,yHigh - yLow - 1);      
+      
+   }
 //-------------------------------------------------------------------------
 //GRID STUFF---------------------------------------------------------------
 

@@ -140,6 +140,9 @@ public class Space{
       for (int i = 0; i < backwardsNeighbors.size(); i++){
          s.append(backwardsNeighbors.get(i).getTag() + " ");
       }
+      if (token != null){  //NEED TO MAKE TYPE SAFE!!!!
+         s.append("\t" + token.toString());
+      }
       //s.append("\n");
       return s.toString();      
    }// end toString
