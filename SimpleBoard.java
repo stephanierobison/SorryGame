@@ -1,4 +1,5 @@
 import java.util.*; 
+import java.awt.*;
 
 /**
    SimpleBoard is the standard SORRY
@@ -70,6 +71,71 @@ public class SimpleBoard extends Board{
       // right side
       for (int j = 1; j <= ROWS - 2; j++)
          spaces.get(j + (2* COLUMNS) - 2 + ROWS - 1).setXY(0, ROWS - j - 1);
+         
+      // RED PLAYERS SPECIAL SPACES   
+      // make red player's start
+      for (int i = 60; i <= 63; i++){
+         spaces.add(new Space(Integer.toString(i)));
+         spaces.get(i).addForwardsNeighbor(spaces.get(4));
+         spaces.get(i).setColor(Color.red.darker());
+         spaces.get(i).setXY(((i - 60) % 2) + 4, (int)Math.floor(((double)(i) - 60.0)/2.0) + 2);
+      }
+      
+      // make red player's safe
+      for (int i = 64; i <= 68; i++){
+         spaces.add(new Space(Integer.toString(i)));
+         spaces.get(i).setColor(Color.red.darker());
+         spaces.get(i).setXY(2, i - 63);
+      }
+      for (int i = 64; i <= 67; i++){
+         spaces.get(i).addForwardsNeighbor(spaces.get(i + 1));
+      }
+      spaces.get(64).addBackwardsNeighbor(spaces.get(2));
+      spaces.get(2).addForwardsNeighbor(spaces.get(64));
+      for (int i = 65; i <= 68; i++){
+         spaces.get(i).addBackwardsNeighbor(spaces.get(i - 1));
+      }
+      // make red player's home      
+      for (int i = 69; i <= 72; i++){
+         spaces.add(new Space(Integer.toString(i)));
+         spaces.get(68).addForwardsNeighbor(spaces.get(i));
+         spaces.get(i).setColor(Color.red.darker());
+         spaces.get(i).setXY(3 - (i % 2), (int)Math.floor(((double)(i) - 69.0)/2.0) + 6);
+      }
+      
+      // BLUE PLAYERS SPECIAL SPACES   
+      // make blue player's start
+      for (int i = 73; i <= 76; i++){
+         spaces.add(new Space(Integer.toString(i)));
+         spaces.get(i).addForwardsNeighbor(spaces.get(19));
+         spaces.get(i).setColor(Color.blue.darker());
+         spaces.get(i).setXY(13 - (i % 2), (int)Math.floor(((double)(i) - 73.0)/2.0) + 4);
+      }
+      
+      
+      // make blue player's safe
+      for (int i = 77; i <= 81; i++){
+         spaces.add(new Space(Integer.toString(i)));
+         spaces.get(i).setColor(Color.blue.darker());
+         spaces.get(i).setXY(14 - (i - 77), 2);
+      }
+      for (int i = 77; i <= 80; i++){
+         spaces.get(i).addForwardsNeighbor(spaces.get(i + 1));
+      }
+      spaces.get(77).addBackwardsNeighbor(spaces.get(17));
+      spaces.get(17).addForwardsNeighbor(spaces.get(77));
+      for (int i = 78; i <= 81; i++){
+         spaces.get(i).addBackwardsNeighbor(spaces.get(i - 1));
+      }
+      
+      // make blue player's home      
+      for (int i = 82; i <= 85; i++){
+         spaces.add(new Space(Integer.toString(i)));
+         spaces.get(81).addForwardsNeighbor(spaces.get(i));
+         spaces.get(i).setColor(Color.blue.darker());
+         spaces.get(i).setXY(8 + (i % 2), (int)Math.floor(((double)(i) - 82.0)/2.0) + 2);
+      }
+      
         
    }// end of make()
    

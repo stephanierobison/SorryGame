@@ -18,26 +18,27 @@ public class GameController2{
       p.add(new Player(Color.yellow));
       
       
-      Pawn p1 = new Pawn(Color.red);
       Pawn p11 = new Pawn(Color.red);
+      Pawn p12 = new Pawn(Color.red);
+      Pawn p13 = new Pawn(Color.red);
+      Pawn p14 = new Pawn(Color.red);
+      
+      Pawn p21 = new Pawn(Color.blue);
       Pawn p22 = new Pawn(Color.blue);
-      Pawn p33 = new Pawn(Color.green);
-      Pawn p44 = new Pawn(Color.yellow);
-      Pawn p2 = new Pawn(Color.blue);
-      Pawn p3 = new Pawn(Color.green);
-      Pawn p4 = new Pawn(Color.yellow);
+      Pawn p23 = new Pawn(Color.blue);
+      Pawn p24 = new Pawn(Color.blue);
       
       SimpleBoard b = new SimpleBoard();
       
-      p1.moveTo(b.getSpace(0,0));
-      p2.moveTo(b.getSpace(15,0));
-      p3.moveTo(b.getSpace(0,15));
-      p4.moveTo(b.getSpace(15,15));
+      p11.moveTo(b.getSpace("60"));
+      p12.moveTo(b.getSpace("61"));
+      p13.moveTo(b.getSpace("62"));
+      p14.moveTo(b.getSpace("63"));
 
-      p11.moveTo(b.getSpace(0,1));
-      p22.moveTo(b.getSpace(15,1));
-      p33.moveTo(b.getSpace(0,14));
-      p44.moveTo(b.getSpace(15,14));      
+      p21.moveTo(b.getSpace("73"));
+      p22.moveTo(b.getSpace("74"));
+      p23.moveTo(b.getSpace("75"));
+      p24.moveTo(b.getSpace("76"));     
                         
       game = new Game(b , new SimpleRules(), p);
       boardPanel = new BoardPanel(game);

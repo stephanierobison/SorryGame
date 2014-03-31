@@ -33,6 +33,12 @@ public class Pawn extends Token{
       g.fillArc(xLow, yLow,
                xHigh - xLow, yHigh - yLow,
                0, 360);
+      Graphics2D g2 = (Graphics2D) g;
+      g2.setStroke(new BasicStroke(1));
+      g2.setColor(color.darker().darker());
+      g2.drawArc(xLow, yLow,
+               xHigh - xLow, yHigh - yLow,
+               0, 360);
    }
    
    public Color getColor(){

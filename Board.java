@@ -113,6 +113,22 @@ public abstract class Board{
       
       return result;
    }// end getSpace(int, int)
+   
+   //???????????????????????????????????????????????????
+   
+   
+      public Space getSpace(String s){
+      Space result = null;
+      Space currentSpace;
+      // just linear scan spaces for last instance of s
+      for (int i = 0; i < spaces.size(); i++){
+         currentSpace = spaces.get(i);
+         if ((currentSpace.getTag().equals(s)))
+            result = currentSpace;   
+      }
+      
+      return result;
+   }// end getSpace(String)
 
 //-------------------------------------------------------------------------
   

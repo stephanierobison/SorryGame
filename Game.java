@@ -29,9 +29,9 @@ public class Game{
    public void nextTurn(){
       currentPlayerIndex++;
       currentPlayerIndex = currentPlayerIndex % players.size();
-      //moves = new int[] {-2, 4, 10}; // Replace with call to Deck
+      moves = new int[] {-1, 1, 10, -10}; // Replace with call to Deck
       //moves = new int[] {1}; // Replace with call to Deck
-      moves = new int[] {deck.drawCard().getRank()}; // change to use ruleset
+      //moves = new int[] {deck.drawCard().getRank()}; // change to use ruleset
       System.out.println(getCurrentPlayer().getColor().toString() + 
                                        "PLAYER'S TURN\n============================");
       System.out.println("They drew a " + Integer.toString(moves[0]));
