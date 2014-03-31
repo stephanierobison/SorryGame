@@ -14,31 +14,11 @@ public class GameController2{
       ArrayList<Player> p = new ArrayList<Player>();
       p.add(new Player(Color.red));
       p.add(new Player(Color.blue));
-      p.add(new Player(Color.green));
-      p.add(new Player(Color.yellow));
-      
-      
-      Pawn p11 = new Pawn(Color.red);
-      Pawn p12 = new Pawn(Color.red);
-      Pawn p13 = new Pawn(Color.red);
-      Pawn p14 = new Pawn(Color.red);
-      
-      Pawn p21 = new Pawn(Color.blue);
-      Pawn p22 = new Pawn(Color.blue);
-      Pawn p23 = new Pawn(Color.blue);
-      Pawn p24 = new Pawn(Color.blue);
+      //p.add(new Player(Color.yellow));
+      //p.add(new Player(Color.green));      
       
       SimpleBoard b = new SimpleBoard();
-      
-      p11.moveTo(b.getSpace("60"));
-      p12.moveTo(b.getSpace("61"));
-      p13.moveTo(b.getSpace("62"));
-      p14.moveTo(b.getSpace("63"));
-
-      p21.moveTo(b.getSpace("73"));
-      p22.moveTo(b.getSpace("74"));
-      p23.moveTo(b.getSpace("75"));
-      p24.moveTo(b.getSpace("76"));     
+    
                         
       game = new Game(b , new SimpleRules(), p);
       boardPanel = new BoardPanel(game);
@@ -90,7 +70,7 @@ public class GameController2{
               // TWO UI STATES: Either pawn selected or not
               
               if (!boardPanel.isPawnSelected()){ // if not selected could select a pawn
-                  System.out.println("Selected the Pawn at x = " + clickedX + ", y = " + clickedY);
+                  //System.out.println("Selected the Pawn at x = " + clickedX + ", y = " + clickedY);
                   clickedPawn = (Pawn)clickedSpace.getToken();
                   if ((clickedPawn != null) && (game.getAllTargets(clickedPawn).size() > 0)){
                      boardPanel.selectPawn(clickedPawn);
@@ -103,10 +83,10 @@ public class GameController2{
                   //MOVE PAWN
                   // only do if selected space is valid target
                   if (game.getAllTargets(boardPanel.getSelectedPawn()).contains(clickedSpace)){
-                     System.out.println("Moving selected pawn to space at x = " + clickedSpace.getX() 
-                                                                     + ", y = " + clickedSpace.getY());
-                     //(targetSpaces.contains(clickedSpace)){
-                     boardPanel.getSelectedPawn().moveTo(clickedSpace);
+                     //System.out.println("Moving selected pawn to space at x = " + clickedSpace.getX() 
+                                  //                                   + ", y = " + clickedSpace.getY());
+                     //boardPanel.getSelectedPawn().moveTo(clickedSpace);
+                     game.getRules().move(boardPanel.getSelectedPawn(), clickedSpace);
                      boardPanel.deselectPawn(); // done with the pawn
                      // NEEDS TO BE DIFFERENT TO ACCOUNT FOR THE 7
                      game.setMoves(null);

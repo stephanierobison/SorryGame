@@ -9,15 +9,18 @@ import java.awt.*;
 public class Pawn extends Token{
 
    private Color color;
+   private Space startSpace;
 
-   public Pawn(Color c){
+   /*public Pawn(Color c){
       iAmOn = null;
       color = c;
-   }
+   }*/
    
    public Pawn(Space s, Color c){
-      this(c);
-      iAmOn = s;
+      color = c;
+      iAmOn = null;
+      startSpace = s;
+      moveTo(s);
    }
 
    public void drawMe(Graphics g, int xLow, int yLow, int xHigh, int yHigh, double scale){
@@ -43,6 +46,14 @@ public class Pawn extends Token{
    
    public Color getColor(){
       return color;
+   }
+   
+   public Space getHomeSpace(){
+      return startSpace;
+   }
+   
+   public void goHome(){
+      moveTo(startSpace);
    }
    
    public void moveTo(Space s){

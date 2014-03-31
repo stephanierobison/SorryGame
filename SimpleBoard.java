@@ -71,20 +71,22 @@ public class SimpleBoard extends Board{
       // right side
       for (int j = 1; j <= ROWS - 2; j++)
          spaces.get(j + (2* COLUMNS) - 2 + ROWS - 1).setXY(0, ROWS - j - 1);
-         
+      
+      Pawn p;   
       // RED PLAYERS SPECIAL SPACES   
       // make red player's start
       for (int i = 60; i <= 63; i++){
          spaces.add(new Space(Integer.toString(i)));
          spaces.get(i).addForwardsNeighbor(spaces.get(4));
-         spaces.get(i).setColor(Color.red.darker());
+         spaces.get(i).setColor(Color.red);
          spaces.get(i).setXY(((i - 60) % 2) + 4, (int)Math.floor(((double)(i) - 60.0)/2.0) + 2);
+         p = new Pawn(spaces.get(i), spaces.get(i).getColor());
       }
       
       // make red player's safe
       for (int i = 64; i <= 68; i++){
          spaces.add(new Space(Integer.toString(i)));
-         spaces.get(i).setColor(Color.red.darker());
+         spaces.get(i).setColor(Color.red);
          spaces.get(i).setXY(2, i - 63);
       }
       for (int i = 64; i <= 67; i++){
@@ -99,7 +101,7 @@ public class SimpleBoard extends Board{
       for (int i = 69; i <= 72; i++){
          spaces.add(new Space(Integer.toString(i)));
          spaces.get(68).addForwardsNeighbor(spaces.get(i));
-         spaces.get(i).setColor(Color.red.darker());
+         spaces.get(i).setColor(Color.red);
          spaces.get(i).setXY(3 - (i % 2), (int)Math.floor(((double)(i) - 69.0)/2.0) + 6);
       }
       
@@ -108,16 +110,18 @@ public class SimpleBoard extends Board{
       for (int i = 73; i <= 76; i++){
          spaces.add(new Space(Integer.toString(i)));
          spaces.get(i).addForwardsNeighbor(spaces.get(19));
-         spaces.get(i).setColor(Color.blue.darker());
+         spaces.get(i).setColor(Color.blue);
          spaces.get(i).setXY(13 - (i % 2), (int)Math.floor(((double)(i) - 73.0)/2.0) + 4);
+         p = new Pawn(spaces.get(i), spaces.get(i).getColor());
       }
       
       
       // make blue player's safe
       for (int i = 77; i <= 81; i++){
          spaces.add(new Space(Integer.toString(i)));
-         spaces.get(i).setColor(Color.blue.darker());
+         spaces.get(i).setColor(Color.blue);
          spaces.get(i).setXY(14 - (i - 77), 2);
+         
       }
       for (int i = 77; i <= 80; i++){
          spaces.get(i).addForwardsNeighbor(spaces.get(i + 1));
@@ -132,11 +136,79 @@ public class SimpleBoard extends Board{
       for (int i = 82; i <= 85; i++){
          spaces.add(new Space(Integer.toString(i)));
          spaces.get(81).addForwardsNeighbor(spaces.get(i));
-         spaces.get(i).setColor(Color.blue.darker());
+         spaces.get(i).setColor(Color.blue);
          spaces.get(i).setXY(8 + (i % 2), (int)Math.floor(((double)(i) - 82.0)/2.0) + 2);
       }
       
-        
+      // YELLOW PLAYERS SPECIAL SPACES   
+      // make yellow player's start
+      for (int i = 86; i <= 89; i++){
+         spaces.add(new Space(Integer.toString(i)));
+         spaces.get(i).addForwardsNeighbor(spaces.get(34));
+         spaces.get(i).setColor(Color.yellow);
+         spaces.get(i).setXY(10 + (i % 2), (int)Math.floor(((double)(i) - 86.0)/2.0) + 12);
+         p = new Pawn(spaces.get(i), spaces.get(i).getColor());
+
+      }
+      
+      
+      // make yellow player's safe
+      for (int i = 90; i <= 94; i++){
+         spaces.add(new Space(Integer.toString(i)));
+         spaces.get(i).setColor(Color.yellow);
+         spaces.get(i).setXY(13, 14 - (i - 90));
+      }
+      for (int i = 90; i <= 93; i++){
+         spaces.get(i).addForwardsNeighbor(spaces.get(i + 1));
+      }
+      spaces.get(90).addBackwardsNeighbor(spaces.get(32));
+      spaces.get(32).addForwardsNeighbor(spaces.get(90));
+      for (int i = 91; i <= 94; i++){
+         spaces.get(i).addBackwardsNeighbor(spaces.get(i - 1));
+      }
+      
+      // make yellow player's home      
+      for (int i = 95; i <= 98; i++){
+         spaces.add(new Space(Integer.toString(i)));
+         spaces.get(94).addForwardsNeighbor(spaces.get(i));
+         spaces.get(i).setColor(Color.yellow);
+         spaces.get(i).setXY(13 - (i % 2), (int)Math.floor(((double)(i) - 95.0)/2.0) + 8);
+      }
+      
+      // GREEN PLAYERS SPECIAL SPACES   
+      // make green player's start
+      for (int i = 99; i <= 102; i++){
+         spaces.add(new Space(Integer.toString(i)));
+         spaces.get(i).addForwardsNeighbor(spaces.get(49));
+         spaces.get(i).setColor(Color.green);
+         spaces.get(i).setXY(3 - (i % 2), (int)Math.floor(((double)(i) - 99.0)/2.0) + 10);
+         p = new Pawn(spaces.get(i), Color.green);
+      }
+      
+      
+      // make green player's safe
+      for (int i = 103; i <= 107; i++){
+         spaces.add(new Space(Integer.toString(i)));
+         spaces.get(i).setColor(Color.green);
+         spaces.get(i).setXY(i - 102, 13);
+      }
+      for (int i = 103; i <= 106; i++){
+         spaces.get(i).addForwardsNeighbor(spaces.get(i + 1));
+      }
+      spaces.get(103).addBackwardsNeighbor(spaces.get(47));
+      spaces.get(47).addForwardsNeighbor(spaces.get(103));
+      for (int i = 104; i <= 107; i++){
+         spaces.get(i).addBackwardsNeighbor(spaces.get(i - 1));
+      }
+      
+      // make green player's home      
+      for (int i = 108; i <= 111; i++){
+         spaces.add(new Space(Integer.toString(i)));
+         spaces.get(107).addForwardsNeighbor(spaces.get(i));
+         spaces.get(i).setColor(Color.green);
+         spaces.get(i).setXY(6 + (i % 2), (int)Math.floor(((double)(i) - 108.0)/2.0) + 12);
+      } 
+      
    }// end of make()
    
 //*************************************************************************
