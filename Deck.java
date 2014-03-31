@@ -6,7 +6,7 @@ import java.util.*;
  */
 
 public class Deck {
-    public static final int[] CARD_RANK = {0, 1, 2, 3, 4, 5, 7, 8, 10, 11, 12};
+    public static final int[] CARD_RANK = {-1, 1, 2, 3, 4, 5, 7, 8, 10, 11, 12};
     public final int DECK_SIZE = 44;
 
     List<Card> deck;
@@ -31,7 +31,7 @@ public class Deck {
 	* Using an iterator, returns the topcard whilst also removing it from the deck.  Will recursively call makeDeck is list empty.
      * Implements a ListIterator to return the top card from the deck List, and removes the returned card from the deck.
      */
-    public Card getCard() {
+    public Card drawCard() {
         ListIterator<Card> deckIterator = deck.listIterator();
         
 	if (deckIterator.hasNext()){
@@ -41,10 +41,10 @@ public class Deck {
         
 		else{
             this.createDeck();
-            topCard = this.getCard();
+            topCard = this.drawCard();
         }//else
         return topCard;
-    }//getCard
+    }//drawCard
 
    
 	
@@ -80,7 +80,7 @@ public class Deck {
  */           
 	public static class Card {
 	   	private int rank;
-		private int theRank:
+		private int theRank;
 		private String direction;
 
 		public Card(Integer rank) {
@@ -94,7 +94,8 @@ public class Deck {
 		public int getRank() {
 			return rank;
 	    	}//getRank
-		public String getDirections() {
+		/*
+      public String getDirections() {
 			theRank = getRank();
 			
 			if (theRank == 0){
@@ -146,10 +147,19 @@ public class Deck {
 				
 			
 		}
-	        
+	    */    
 		public String toString() {
 			String cardString = "";
 	    	return Integer.toString(this.rank);
 		}//toString
 	}//CARD
+   
+   
+   //TEST
+   public static void main(String [ ] args){
+      Deck d = new Deck();
+      System.out.println(d.toString());
+   }
+   
+   
 }//DECK

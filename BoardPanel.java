@@ -107,10 +107,11 @@ public class BoardPanel extends JPanel{
 		setSize((boxWidth*NUMBER_COLUMNS)+1, (boxHeight	* NUMBER_ROWS)+1);
 
 		//	NEEDS	TO	CHANGE
-		setBackground(Color.black);
+		setBackground(Color.gray);
 		
       // Draw all components in Z-Axis Order
       
+      /*
       //drawGrid(g); // TEST ONLY
       //draw column dividers
 	   for(int i =	0;	i <= NUMBER_COLUMNS;	i++){
@@ -125,11 +126,24 @@ public class BoardPanel extends JPanel{
    		g.drawLine(0, i *	boxHeight,
    						panelX, i *	boxHeight);
       }
+      */
+      
+      //DRAW SPACES ????? TEST ONLY??? SEE HOW IT LOOKS....
+      ArrayList<Space> allSpaces = game.getBoard().getAllSpaces();
+      for (int i = 0; i < allSpaces.size(); i++){
+            int gridX = allSpaces.get(i).getX();
+            int gridY = allSpaces.get(i).getY();
+            int xLow = getLowPixelX(gridX);
+            int xHigh = getHighPixelX(gridX);  
+            int yLow = getLowPixelY(gridY);
+            int yHigh = getHighPixelY(gridY);
+            allSpaces.get(i).drawMe(g, xLow, yLow, xHigh, yHigh);         
+      }
       
       
       // DO USING INSTANCE VARIABLES TO REDUCE ON THE FLY COMPUTATION?
       	  
-		drawTokens(g);
+
       
       //highlightSpace(g, 0 ,0); // TEST ONLY
       
@@ -151,7 +165,7 @@ public class BoardPanel extends JPanel{
       
       }
 		//drawMoves(g);
-
+  		drawTokens(g);       // PAWNS GO ON TOP
 	  
 	  //System.out.println("Paint	Component");
 		
@@ -212,7 +226,10 @@ public class BoardPanel extends JPanel{
       int yLow = getLowPixelY(y);
       int yHigh = getHighPixelY(y);
       g.setColor(Color.pink);                   // NEED TO CHANGE
-      g.drawRect(xLow + 1,yLow + 1,xHigh - xLow - 1,yHigh - yLow - 1);      
+      Graphics2D g2 = (Graphics2D) g;
+      int k = 6;
+      g2.setStroke(new BasicStroke(k));
+      g2.drawRect(xLow + k ,yLow + k,xHigh - xLow - (2*k),yHigh - yLow - (2*k));      
       
    }
 //-------------------------------------------------------------------------

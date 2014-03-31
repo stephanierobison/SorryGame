@@ -7,6 +7,7 @@ import java.awt.*;
 public class Game{
 
    private Board board;
+   private Deck deck;
    private Ruleset rules;
    private ArrayList<Player> players;
    private int currentPlayerIndex;
@@ -18,8 +19,10 @@ public class Game{
       rules = r;
       players = p;
       // hard code for now
-      currentPlayerIndex = 0;
+      deck = new Deck();
+      currentPlayerIndex = -1;
       moves = null;
+      nextTurn();
    }
    
    // Mutates state to get next turn
@@ -27,7 +30,16 @@ public class Game{
       currentPlayerIndex++;
       currentPlayerIndex = currentPlayerIndex % players.size();
       //moves = new int[] {-2, 4, 10}; // Replace with call to Deck
-      moves = new int[] {1}; // Replace with call to Deck
+      //moves = new int[] {1}; // Replace with call to Deck
+      moves = new int[] {deck.drawCard().getRank()}; // change to use ruleset
+      System.out.println(getCurrentPlayer().getColor().toString() + 
+                                       "PLAYER'S TURN\n============================");
+      System.out.println("They drew a " + Integer.toString(moves[0]));
+      if (getMoveablePawns().size() == 0){
+         System.out.println("They cannot move.");
+         nextTurn();
+      }
+
    }
    
    public Player getCurrentPlayer(){
@@ -40,8 +52,16 @@ public class Game{
    
    }// end of getBoard()
    
+   public Deck getDeck(){
+      return deck;
+   }
+   
    public Ruleset getRules(){
       return rules;
+   }
+   
+   public void setMoves(int[] moves){
+      this.moves = moves;
    }
    
    public int[] getMoves(){

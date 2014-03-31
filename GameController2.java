@@ -89,7 +89,7 @@ public class GameController2{
               // TWO UI STATES: Either pawn selected or not
               
               if (!boardPanel.isPawnSelected()){ // if not selected could select a pawn
-                  //System.out.println("PAWN *NOT* SELECTED -> SELECTS PAWN");
+                  System.out.println("Selected the Pawn at x = " + clickedX + ", y = " + clickedY);
                   clickedPawn = (Pawn)clickedSpace.getToken();
                   if ((clickedPawn != null) && (game.getAllTargets(clickedPawn).size() > 0)){
                      boardPanel.selectPawn(clickedPawn);
@@ -102,9 +102,14 @@ public class GameController2{
                   //MOVE PAWN
                   // only do if selected space is valid target
                   if (game.getAllTargets(boardPanel.getSelectedPawn()).contains(clickedSpace)){
+                     System.out.println("Moving selected pawn to space at x = " + clickedSpace.getX() 
+                                                                     + ", y = " + clickedSpace.getY());
                      //(targetSpaces.contains(clickedSpace)){
                      boardPanel.getSelectedPawn().moveTo(clickedSpace);
                      boardPanel.deselectPawn(); // done with the pawn
+                     // NEEDS TO BE DIFFERENT TO ACCOUNT FOR THE 7
+                     game.setMoves(null);
+                     game.nextTurn();
                   }
                   
               }
@@ -122,21 +127,10 @@ public class GameController2{
   
    
    public static void main(String [ ] args){
-      GameController2 g = new GameController2();
-      System.out.println(g.toString());
-      System.out.println(g.getGame().getPawns());
-      System.out.println(g.getGame().getMoveablePawns());
-      g.getGame().nextTurn();
-      System.out.println(g.getGame().getMoveablePawns());
-      g.getGame().nextTurn();
-      System.out.println(g.getGame().getMoveablePawns());
-      g.getGame().nextTurn();
-      System.out.println(g.getGame().getMoveablePawns());
-      g.getGame().nextTurn();
-      System.out.println(g.getGame().getMoveablePawns());
-      g.getGame().nextTurn();
-      System.out.println(g.getGame().getMoveablePawns());
+      Scanner scanner = new Scanner(System.in);
       
+      GameController2 g = new GameController2();
+     
       JFrame x = new JFrame();
       x.setTitle("");  // name the window
 		x.setSize(550, 550);  // set size
@@ -147,6 +141,8 @@ public class GameController2{
       
 		x.add(g.getBoardPanel());
 		x.setVisible(true);	
+      
+      
    } // end of main
 
 

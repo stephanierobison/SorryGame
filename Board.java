@@ -149,4 +149,10 @@ public abstract class Board{
    }// end of toString()
 
 //-------------------------------------------------------------------------
+
+
+   public ArrayList<Space> getAllSpaces(){
+      return spaces;
+   }
+   
 }// end of Board

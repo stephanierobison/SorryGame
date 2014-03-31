@@ -1,4 +1,5 @@
 import java.util.*; 
+import java.awt.*;
 
 /**
    A Space is a single location on a game board.
@@ -30,6 +31,7 @@ public class Space{
    public static final String DEFAULT_TAG = "NO TAG";
    public static final int DEFAULT_X = -1;
    public static final int DEFAULT_Y = -2;
+   public static final Color DEFAULT_COLOR = Color.white;
 
 //*************************************************************************
 // INSTANCE VARIABLES
@@ -56,6 +58,10 @@ public class Space{
 
    /** Each Space may be occupied by up to one Token.*/
    private Token token;
+   
+   /** The Space's background color. Used mostly for testing
+   and identifying a players safe areas??????*/
+   private Color color;
 
 //*************************************************************************
 // CONSTRUCTORS
@@ -70,6 +76,7 @@ public class Space{
       forwardsNeighbors = new ArrayList<Space> ();
       backwardsNeighbors = new ArrayList<Space> ();
       token = null;
+      color = DEFAULT_COLOR;
    }
    
 //-------------------------------------------------------------------------
@@ -112,6 +119,10 @@ public class Space{
    
    public String getTag(){
       return tag;
+   }
+   
+   public Color getColor(){
+      return color;
    }
    
    public ArrayList<Space> getForwardsNeighbors(){
@@ -159,6 +170,11 @@ public class Space{
       this.x = x;    
       this.y = y;
    }// end setXY  
+   
+//-Color-------------------------------------------------------------------   
+   public void setColor(Color c){
+      color = c;
+   }// end setColor     
     
 //-NEIGHBORS---------------------------------------------------------------   
    public void setForwardsNeighbors(ArrayList<Space> fn){
@@ -192,4 +208,15 @@ public class Space{
          result = true;
       return result;
    }
+   
+//?????????????????????????????????????????????????????????????
+//?????????????????????????????????????????????????????????????
+
+   public void drawMe(Graphics g, int xLow, int yLow, int xHigh, int yHigh){
+      g.setColor(color);
+      g.fillRect(xLow, yLow,xHigh - xLow, yHigh - yLow);
+      g.setColor(Color.black);
+      g.drawRect(xLow, yLow,xHigh - xLow, yHigh - yLow);
+   }
+
 }// end of Space
