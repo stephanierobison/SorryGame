@@ -72,7 +72,9 @@ public class GameController2{
               if (!boardPanel.isPawnSelected()){ // if not selected could select a pawn
                   //System.out.println("Selected the Pawn at x = " + clickedX + ", y = " + clickedY);
                   clickedPawn = (Pawn)clickedSpace.getToken();
-                  if ((clickedPawn != null) && (game.getAllTargets(clickedPawn).size() > 0)){
+                  if ((clickedPawn != null) && 
+                      (clickedPawn.getColor().toString().equals(game.getCurrentPlayer().getColor().toString())) &&
+                      (game.getAllTargets(clickedPawn).size() > 0)){
                      boardPanel.selectPawn(clickedPawn);
                      //System.out.println("SELECTED - " + selectedPawn.toString());
                   }
