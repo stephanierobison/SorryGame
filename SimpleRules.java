@@ -2,11 +2,12 @@ import java.util.*;
 
 
 public class SimpleRules extends Ruleset{
+   
+
 //*************************************************************************
 // CONSTRUCTORS
 //*************************************************************************   
    public SimpleRules(){
-   
    }
 //*************************************************************************
 // PUBLIC METHODS
@@ -63,5 +64,44 @@ public class SimpleRules extends Ruleset{
       }
       p.moveTo(s);
          
+   }
+   
+   
+   public ArrayList<Space> getSpecialTargets(Board b, Pawn p, Space s, int n){
+      ArrayList<Space> result = new ArrayList<Space>();
+      if (n == START_OUT){
+         if (p.whereAmI().getTrait() == START){
+            ArrayList<Space> allExits = b.getTypeOfSpaces(START_EXIT, p.getColor());
+            //result.addAll(b.getTypeOfSpaces(START_EXIT, p.getColor()));
+            for (int i = 0; i < allExits.size(); i++){
+               Pawn squatter = allExits.get(i).getPawn();
+               if ((allExits.get(i).isEmpty()) ||
+                   (!squatter.getColor().toString().equals(p.getColor().toString())))
+                  result.add(allExits.get(i));
+            }
+            
+         }
+      }
+      else if (n == SEVEN){
+      
+      }
+      else if ((n == SORRY_SWAP) && (p.whereAmI().getTrait() == START)){
+         ArrayList<Pawn> victims = b.getUnsafePawns();
+         for (int i = 0; i < victims.size(); i++){
+            if (!victims.get(i).getColor().toString().equals(p.getColor().toString()))
+               result.add(victims.get(i).whereAmI());
+         }
+      }
+      else if (n == ELEVEN_SWAP){
+         ArrayList<Pawn> victims = b.getUnsafePawns();
+         if (victims.contains(p)){ // for eleven swap you must be unsafe too
+            for (int i = 0; i < victims.size(); i++){
+               if (!victims.get(i).getColor().toString().equals(p.getColor().toString()))
+                  result.add(victims.get(i).whereAmI());
+            } 
+         } 
+      }
+      
+      return result;
    }
 }// end of ruleset

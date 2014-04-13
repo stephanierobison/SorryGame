@@ -29,7 +29,7 @@ public class Game{
    public void nextTurn(){
       currentPlayerIndex++;
       currentPlayerIndex = currentPlayerIndex % players.size();
-      moves = new int[] {-1, 1, 10, -10}; // Replace with call to Deck
+      moves = new int[] {Ruleset.START_OUT,Ruleset.ELEVEN_SWAP, -1, 1, 10, -10}; // Replace with call to Deck
       //moves = new int[] {1}; // Replace with call to Deck
       //moves = new int[] {deck.drawCard().getRank()}; // change to use ruleset
       System.out.println(getCurrentPlayer().getColor().toString() + 
@@ -106,7 +106,7 @@ public class Game{
       for (int i = 0; i < candidates.size(); i++){
          if (moves != null){
             for (int j = 0; j < moves.length; j++){
-               s.addAll(rules.getTargets(candidates.get(i), candidates.get(i).whereAmI(), moves[j]));
+               s.addAll(rules.getTargets(board, candidates.get(i), candidates.get(i).whereAmI(), moves[j]));
             }
          }
          if (s.size() > 0)
@@ -122,7 +122,7 @@ public class Game{
    public ArrayList<Space> getAllTargets(Pawn p){
       ArrayList<Space> result = new ArrayList<Space>();
       for (int i = 0; i < moves.length; i++){
-         result.addAll(rules.getTargets(p, p.whereAmI(), moves[i]));
+         result.addAll(rules.getTargets(board, p, p.whereAmI(), moves[i]));
       } 
       
       return result;

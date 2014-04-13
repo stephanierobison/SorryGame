@@ -4,7 +4,22 @@ import java.util.*;
 public abstract class Ruleset{
 //*************************************************************************
 // CONSTANTS
-//************************************************************************* 
+//*************************************************************************
+   
+   // Trait Values
+   public static final int NO_TRAIT = 0; 
+   public static final int START = 1;
+   public static final int HOME = 2;
+   public static final int START_EXIT = 3;
+   public static final int SLIDER_START = 4;
+
+   // Special Move Values
+   public static final int SPECIAL_MOVE_MIN = -1000;
+   public static final int START_OUT = -1001;
+   public static final int SEVEN = -1002;    
+   public static final int SORRY_SWAP = -1003;
+   public static final int ELEVEN_SWAP = -1004;
+   
   // public static final int[] CARD_PROPERTIES = {-100,-200};
 //*************************************************************************
 // PUBLIC METHODS
@@ -25,12 +40,17 @@ public abstract class Ruleset{
      
    */
    // NOTE TO SELF: should probably make iterative somehow for speed..
-   public ArrayList<Space> getTargets(Pawn p, Space s, int n){
+   public ArrayList<Space> getTargets(Board b, Pawn p, Space s, int n){
       ArrayList<Space> result = new ArrayList<Space>();
       ArrayList<Space> neighbors;   // neighbors of s
       ArrayList<Space> neighbors2;  // neighbors of neighbors of s    
       int cost;                     // cost of movement (depends on direction)
-      if (n == 0){         // BASE CASE
+      
+      if (n < SPECIAL_MOVE_MIN){ // SPECIAL BASE CASE
+                                 // Special Moves have negative values below some MIN
+         result = getSpecialTargets(b, p, s, n);
+      }
+      else if (n == 0){         // BASE CASE
          if (isLandable(s,p)) // ... but it only counts if we can land on the space
             result.add(s);
       }
@@ -45,7 +65,7 @@ public abstract class Ruleset{
             cost = -1;
          }
          for (int i = 0; i < neighbors.size(); i++){   // ...recurse on all neighbors
-            neighbors2 = getTargets(p, neighbors.get(i), (n + cost) ); // don't forget to expend a move
+            neighbors2 = getTargets(b, p, neighbors.get(i), (n + cost) ); // don't forget to expend a move
             result.addAll(neighbors2);
          }
       }
@@ -82,4 +102,7 @@ public abstract class Ruleset{
    */
    abstract void move(Pawn p, Space s);
 //-------------------------------------------------------------------------
+
+   abstract ArrayList<Space> getSpecialTargets(Board b, Pawn p, Space s, int n);
+
 }// end of ruleset

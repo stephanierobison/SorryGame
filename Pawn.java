@@ -63,7 +63,7 @@ public class Pawn extends Token{
       s.setToken(this);
       iAmOn = s;
    }
-   
+  
    public String toString(){
       return color.toString();
    }

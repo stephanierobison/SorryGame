@@ -1,4 +1,5 @@
 import java.util.*; 
+import java.awt.*; 
 
 /**
    The board class is a contains a graph of Space
@@ -42,6 +43,7 @@ public abstract class Board{
       Space objects own their own neighbor lists.
    */
    protected ArrayList<Space> spaces; // want subclasses to inherit, but no public access
+   protected Ruleset rules;
 
 //*************************************************************************
 // CONSTRUCTORS
@@ -129,6 +131,33 @@ public abstract class Board{
       
       return result;
    }// end getSpace(String)
+   
+   
+   public ArrayList<Space> getTypeOfSpaces(int trait){
+      ArrayList<Space> result = new ArrayList<Space>();
+      Space currentSpace;
+      for (int i = 0; i < spaces.size(); i++){
+        currentSpace = spaces.get(i);
+        if (currentSpace.getTrait() == trait)
+          result.add(currentSpace);   
+        }
+      
+        return result;
+   }
+   
+   public ArrayList<Space> getTypeOfSpaces(int trait, Color c){
+      ArrayList<Space> result = new ArrayList<Space>();
+      ArrayList<Space> x = getTypeOfSpaces(trait);
+      Space currentSpace;
+      for (int i = 0; i < x.size(); i++){
+        currentSpace = x.get(i);
+        if (currentSpace.getTraitColor().toString().equals(c.toString()))
+          result.add(currentSpace);   
+        }
+      
+        return result; 
+      
+   }
 
 //-------------------------------------------------------------------------
   
@@ -169,6 +198,23 @@ public abstract class Board{
 
    public ArrayList<Space> getAllSpaces(){
       return spaces;
+   }
+   
+   public ArrayList<Pawn> getUnsafePawns(){
+      ArrayList<Token> x = getTokens();
+      ArrayList<Pawn> result = new ArrayList<Pawn>();
+      Token currentToken;
+      Pawn p;
+      for (int i = 0; i < x.size(); i++){
+         currentToken = x.get(i);
+         if (currentToken instanceof Pawn){
+            p = (Pawn)currentToken;
+            if (!p.whereAmI().getColor().equals(p.getColor())){
+               result.add(p);    
+            }
+         }
+      }
+      return result;
    }
    
 }// end of Board

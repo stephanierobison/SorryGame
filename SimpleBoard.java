@@ -21,6 +21,16 @@ public class SimpleBoard extends Board{
 //*************************************************************************
 // CONSTRUCTOR
 //*************************************************************************   
+   public SimpleBoard(){
+      super();
+      rules = new SimpleRules();
+    }
+
+   public SimpleBoard(int r, int c){
+      super(r,c);
+      rules = new SimpleRules();      
+   }
+  
   /* public SimpleBoard(){
       ROWS = 16;
       COLUMNS = 16;
@@ -77,11 +87,14 @@ public class SimpleBoard extends Board{
       // make red player's start
       for (int i = 60; i <= 63; i++){
          spaces.add(new Space(Integer.toString(i)));
-         spaces.get(i).addForwardsNeighbor(spaces.get(4));
+         //spaces.get(i).addForwardsNeighbor(spaces.get(4));
          spaces.get(i).setColor(Color.red);
+         spaces.get(i).setTrait(Ruleset.START);
          spaces.get(i).setXY(((i - 60) % 2) + 4, (int)Math.floor(((double)(i) - 60.0)/2.0) + 2);
          p = new Pawn(spaces.get(i), spaces.get(i).getColor());
       }
+      spaces.get(4).setTrait(Ruleset.START_EXIT);
+      spaces.get(4).setTraitColor(Color.red);
       
       // make red player's safe
       for (int i = 64; i <= 68; i++){
@@ -109,12 +122,14 @@ public class SimpleBoard extends Board{
       // make blue player's start
       for (int i = 73; i <= 76; i++){
          spaces.add(new Space(Integer.toString(i)));
-         spaces.get(i).addForwardsNeighbor(spaces.get(19));
+         //spaces.get(i).addForwardsNeighbor(spaces.get(19));
+         spaces.get(i).setTrait(Ruleset.START);
          spaces.get(i).setColor(Color.blue);
          spaces.get(i).setXY(13 - (i % 2), (int)Math.floor(((double)(i) - 73.0)/2.0) + 4);
          p = new Pawn(spaces.get(i), spaces.get(i).getColor());
       }
-      
+      spaces.get(19).setTrait(Ruleset.START_EXIT);
+      spaces.get(19).setTraitColor(Color.blue);
       
       // make blue player's safe
       for (int i = 77; i <= 81; i++){
@@ -144,13 +159,15 @@ public class SimpleBoard extends Board{
       // make yellow player's start
       for (int i = 86; i <= 89; i++){
          spaces.add(new Space(Integer.toString(i)));
-         spaces.get(i).addForwardsNeighbor(spaces.get(34));
+         //spaces.get(i).addForwardsNeighbor(spaces.get(34));
          spaces.get(i).setColor(Color.yellow);
+         spaces.get(i).setTrait(Ruleset.START);
          spaces.get(i).setXY(10 + (i % 2), (int)Math.floor(((double)(i) - 86.0)/2.0) + 12);
          p = new Pawn(spaces.get(i), spaces.get(i).getColor());
 
       }
-      
+      spaces.get(34).setTrait(Ruleset.START_EXIT);
+      spaces.get(34).setTraitColor(Color.yellow);
       
       // make yellow player's safe
       for (int i = 90; i <= 94; i++){
@@ -179,12 +196,14 @@ public class SimpleBoard extends Board{
       // make green player's start
       for (int i = 99; i <= 102; i++){
          spaces.add(new Space(Integer.toString(i)));
-         spaces.get(i).addForwardsNeighbor(spaces.get(49));
+         //spaces.get(i).addForwardsNeighbor(spaces.get(49));
          spaces.get(i).setColor(Color.green);
+         spaces.get(i).setTrait(Ruleset.START);
          spaces.get(i).setXY(3 - (i % 2), (int)Math.floor(((double)(i) - 99.0)/2.0) + 10);
          p = new Pawn(spaces.get(i), Color.green);
       }
-      
+      spaces.get(49).setTrait(Ruleset.START_EXIT);
+      spaces.get(49).setTraitColor(Color.green);
       
       // make green player's safe
       for (int i = 103; i <= 107; i++){
@@ -223,41 +242,3 @@ public class SimpleBoard extends Board{
    }
 
 }
-
-
-
-// SCRIPS AND SCRAPS
-/*
-            else if (i == 2)
-               spaces.get(index).setXY((N/4) - 1 - j,(N/4) - 1);         
-            else if (i == 3)
-               spaces.get(index).setXY(0, (N/4) - 1 - j);
-*/
-      /*spaces.get(0).setXY(0,0); // start in upper LH corner
-      for (int i = 0; i < 4; i++)
-         for (int j = 1, index ; j < (N / 4); j++){
-            // there has to be a better way to do this...
-            index = (i * (N/4)) + j;
-            if (i == 0)
-               spaces.get(index).setXY(j, 0);
-            else if (i == 1)
-               spaces.get(index).setXY((N/4) - 1, j);
-            else if (i == 2)
-               spaces.get(index).setXY((N/4) - 1 - j,(N/4) - 1);         
-            else if (i == 3)
-               spaces.get(index).setXY(0, (N/4) - 1 - j);
-                     
-            System.out.println("Index: " + index + ",\tXY: " + 
-                                       spaces.get(index).getX() + ", " +
-                                       spaces.get(index).getY());
-            
-         } WRONG */
-      
-      // add shortcut from 5 to 9 and back
-      /*spaces.get(5).addForwardsNeighbor(spaces.get(9));
-      spaces.get(9).addBackwardsNeighbor(spaces.get(5));*/
-      
-      // add a dead end
-/*      spaces.add(new Space("D")); // should have index 10
-      spaces.get(1).addForwardsNeighbor(spaces.get(10));            
-      spaces.get(10).addBackwardsNeighbor(spaces.get(1));*/

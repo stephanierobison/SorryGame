@@ -55,6 +55,8 @@ public class Space{
    can be reached from this one via a single
    backwards move. */
    private ArrayList<Space> backwardsNeighbors;
+   
+   private ArrayList<Space> slideTargets;
 
    /** Each Space may be occupied by up to one Token.*/
    private Token token;
@@ -62,6 +64,9 @@ public class Space{
    /** The Space's background color. Used mostly for testing
    and identifying a players safe areas??????*/
    private Color color;
+   
+   private int trait;
+   private Color traitColor;
 
 //*************************************************************************
 // CONSTRUCTORS
@@ -77,6 +82,9 @@ public class Space{
       backwardsNeighbors = new ArrayList<Space> ();
       token = null;
       color = DEFAULT_COLOR;
+      trait = Ruleset.NO_TRAIT;
+      traitColor = DEFAULT_COLOR;
+      slideTargets = new ArrayList<Space> ();
    }
    
 //-------------------------------------------------------------------------
@@ -117,12 +125,35 @@ public class Space{
       return token;
    }
    
+   public Pawn getPawn(){
+      Pawn result = null;
+      if (token instanceof Pawn)
+         result = (Pawn)token;      
+      return result;
+   }
+   
    public String getTag(){
       return tag;
    }
    
    public Color getColor(){
       return color;
+   }
+   
+   public void setTrait(int i){
+      trait = i;
+   }
+   
+   public int getTrait(){
+      return trait;
+   }
+   
+   public void setTraitColor(Color c){
+      traitColor = c;
+   }
+   
+   public Color getTraitColor(){
+      return traitColor;
    }
    
    public ArrayList<Space> getForwardsNeighbors(){
@@ -132,6 +163,23 @@ public class Space{
    public ArrayList<Space> getBackwardsNeighbors(){
       return backwardsNeighbors;
    }
+   
+   public ArrayList<Space> getSlideTargets(){
+      return slideTargets;
+   }
+   
+   public Space getSlideEnd(){
+      Space result = null;
+      if (slideTargets.size() > 0){
+         result = slideTargets.get(0);      
+      }
+      return result;
+   }
+   
+   public void addSlideTarget(Space s){
+      slideTargets.add(s);
+   }
+   
 //-------------------------------------------------------------------------
    /**
       @return  String   A String representation of the Space.
@@ -220,6 +268,25 @@ public class Space{
       g.fillRect(xLow, yLow,xHigh - xLow, yHigh - yLow);
       g.setColor(Color.black);
       g.drawRect(xLow, yLow,xHigh - xLow, yHigh - yLow);
+      
+      if(traitColor != null)
+         g.setColor(traitColor);
+      
+      //decorations
+      if (trait == Ruleset.HOME){
+      
+      }
+      else if (trait == Ruleset.START){
+      
+      }
+      else if (trait == Ruleset.START_EXIT){
+         //draw a cross
+         g.drawLine(xLow,yLow, xHigh, yHigh);
+         g.drawLine(xLow,yHigh, xHigh, yLow);
+      }
+      else if (trait == Ruleset.SLIDER_START){
+      
+      }
    }
 
 }// end of Space
