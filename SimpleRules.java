@@ -57,18 +57,26 @@ public class SimpleRules extends Ruleset{
    }
 //-------------------------------------------------------------------------
    //handles consequences of moving a pawn somewhere
-   public void move(Pawn p, Space s){
-      if(!s.isEmpty() && (s.getToken() instanceof Pawn)){ // BUMP!
-         Pawn p2 = (Pawn)s.getToken();
-         p2.goHome();
+   public void move(Pawn p, Space s, int move){
+      Pawn p2 = s.getPawn();   
+      // Special Cases
+      // Eleven swap is only case where you land on someone without
+      // bumping them
+      if (move == Ruleset.ELEVEN_SWAP){
+         p.swapWith(p2);
       }
-      p.moveTo(s);
+      else if(!s.isEmpty() && (s.getToken() instanceof Pawn)){ // BUMP!
+         p2.goHome();
+         
+      }
+      p.moveTo(s); // redundant for eleven move but OK
+      
          
    }
    
    
-   public ArrayList<Space> getSpecialTargets(Board b, Pawn p, Space s, int n){
-      ArrayList<Space> result = new ArrayList<Space>();
+   public ArrayList<Move> getSpecialTargets(Board b, Pawn p, Space s, int n){
+      ArrayList<Move> result = new ArrayList<Move>();
       if (n == START_OUT){
          if (p.whereAmI().getTrait() == START){
             ArrayList<Space> allExits = b.getTypeOfSpaces(START_EXIT, p.getColor());
@@ -77,7 +85,7 @@ public class SimpleRules extends Ruleset{
                Pawn squatter = allExits.get(i).getPawn();
                if ((allExits.get(i).isEmpty()) ||
                    (!squatter.getColor().toString().equals(p.getColor().toString())))
-                  result.add(allExits.get(i));
+                  result.add(new Move (allExits.get(i), n));
             }
             
          }
@@ -89,7 +97,7 @@ public class SimpleRules extends Ruleset{
          ArrayList<Pawn> victims = b.getUnsafePawns();
          for (int i = 0; i < victims.size(); i++){
             if (!victims.get(i).getColor().toString().equals(p.getColor().toString()))
-               result.add(victims.get(i).whereAmI());
+               result.add(new Move (victims.get(i).whereAmI(), n));
          }
       }
       else if (n == ELEVEN_SWAP){
@@ -97,7 +105,7 @@ public class SimpleRules extends Ruleset{
          if (victims.contains(p)){ // for eleven swap you must be unsafe too
             for (int i = 0; i < victims.size(); i++){
                if (!victims.get(i).getColor().toString().equals(p.getColor().toString()))
-                  result.add(victims.get(i).whereAmI());
+                  result.add(new Move(victims.get(i).whereAmI(), n));
             } 
          } 
       }

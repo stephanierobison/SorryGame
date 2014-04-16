@@ -25,6 +25,11 @@ public abstract class Ruleset{
 // PUBLIC METHODS
 //*************************************************************************   
 //-------------------------------------------------------------------------
+   
+   public ArrayList<Move> getTargets(Board b, Pawn p, Space s, int n){
+      return getTargets(b, p, s, n, n);   
+   }
+   
    /**
       Recursivly determines all possible forwards moves
       given a starting Space and a positive integer 
@@ -40,10 +45,10 @@ public abstract class Ruleset{
      
    */
    // NOTE TO SELF: should probably make iterative somehow for speed..
-   public ArrayList<Space> getTargets(Board b, Pawn p, Space s, int n){
-      ArrayList<Space> result = new ArrayList<Space>();
+   private ArrayList<Move> getTargets(Board b, Pawn p, Space s, int n, int x){// is just records starting n
+      ArrayList<Move> result = new ArrayList<Move>();
       ArrayList<Space> neighbors;   // neighbors of s
-      ArrayList<Space> neighbors2;  // neighbors of neighbors of s    
+      ArrayList<Move> neighborsTargets;  // valid targets of neighbors of neighbors of s    
       int cost;                     // cost of movement (depends on direction)
       
       if (n < SPECIAL_MOVE_MIN){ // SPECIAL BASE CASE
@@ -52,7 +57,7 @@ public abstract class Ruleset{
       }
       else if (n == 0){         // BASE CASE
          if (isLandable(s,p)) // ... but it only counts if we can land on the space
-            result.add(s);
+            result.add(new Move(s, x));
       }
                                  // INDUCTIVE CASE 
       else if (isPassable(s,p)){   // ...but only bother if we can traverse the current space.               
@@ -65,8 +70,8 @@ public abstract class Ruleset{
             cost = -1;
          }
          for (int i = 0; i < neighbors.size(); i++){   // ...recurse on all neighbors
-            neighbors2 = getTargets(b, p, neighbors.get(i), (n + cost) ); // don't forget to expend a move
-            result.addAll(neighbors2);
+            neighborsTargets = getTargets(b, p, neighbors.get(i), (n + cost), x ); // don't forget to expend a move
+            result.addAll(neighborsTargets);
          }
       }
       // Implied ELSE result.add(NULL)
@@ -100,9 +105,9 @@ public abstract class Ruleset{
       Handles the mutation required to move a particular pawn to a
       particular space.
    */
-   abstract void move(Pawn p, Space s);
+   abstract void move(Pawn p, Space s, int move);
 //-------------------------------------------------------------------------
 
-   abstract ArrayList<Space> getSpecialTargets(Board b, Pawn p, Space s, int n);
+   protected abstract ArrayList<Move> getSpecialTargets(Board b, Pawn p, Space s, int n);
 
 }// end of ruleset

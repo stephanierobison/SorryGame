@@ -63,6 +63,13 @@ public class Pawn extends Token{
       s.setToken(this);
       iAmOn = s;
    }
+   
+   
+   public void swapWith(Pawn p){
+      Space tempHolder = whereAmI();
+      moveTo(p.whereAmI());
+      p.moveTo(tempHolder);
+   }
   
    public String toString(){
       return color.toString();

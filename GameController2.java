@@ -71,7 +71,7 @@ public class GameController2{
               
               if (!boardPanel.isPawnSelected()){ // if not selected could select a pawn
                   //System.out.println("Selected the Pawn at x = " + clickedX + ", y = " + clickedY);
-                  clickedPawn = (Pawn)clickedSpace.getToken();
+                  clickedPawn = clickedSpace.getPawn();
                   if ((clickedPawn != null) && 
                       (clickedPawn.getColor().toString().equals(game.getCurrentPlayer().getColor().toString())) &&
                       (game.getAllTargets(clickedPawn).size() > 0)){
@@ -82,14 +82,14 @@ public class GameController2{
               else{ // if pawn selected could move it
                   //System.out.println("PAWN SELECTED");
                   
+                  ArrayList<Move> targets = game.getAllTargets(boardPanel.getSelectedPawn());   
                   //MOVE PAWN
                   // only do if selected space is valid target
-                  if (game.getAllTargets(boardPanel.getSelectedPawn()).contains(clickedSpace)){
+                  if (Move.subsetTargeting(clickedSpace)){
                      //System.out.println("Moving selected pawn to space at x = " + clickedSpace.getX() 
                                   //                                   + ", y = " + clickedSpace.getY());
                      //boardPanel.getSelectedPawn().moveTo(clickedSpace);
-                     game.getRules().move(boardPanel.getSelectedPawn(), clickedSpace);
-                     boardPanel.deselectPawn(); // done with the pawn
+                      boardPanel.deselectPawn(); // done with the pawn
                      // NEEDS TO BE DIFFERENT TO ACCOUNT FOR THE 7
                      game.setMoves(null);
                      game.nextTurn();

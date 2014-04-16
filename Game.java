@@ -102,7 +102,7 @@ public class Game{
       Color c = players.get(currentPlayerIndex).getColor();
       ArrayList<Pawn> result = new ArrayList<Pawn>();
       ArrayList<Pawn> candidates = getPawns(c);
-      ArrayList<Space> s = new ArrayList<Space>();
+      ArrayList<Move> s = new ArrayList<Move>();
       for (int i = 0; i < candidates.size(); i++){
          if (moves != null){
             for (int j = 0; j < moves.length; j++){
@@ -111,7 +111,7 @@ public class Game{
          }
          if (s.size() > 0)
             result.add(candidates.get(i));
-         s = new ArrayList<Space>();
+         s = new ArrayList<Move>();
       }
 
       return result;
@@ -119,8 +119,8 @@ public class Game{
    }
    
    
-   public ArrayList<Space> getAllTargets(Pawn p){
-      ArrayList<Space> result = new ArrayList<Space>();
+   public ArrayList<Move> getAllTargets(Pawn p){
+      ArrayList<Move> result = new ArrayList<Move>();
       for (int i = 0; i < moves.length; i++){
          result.addAll(rules.getTargets(board, p, p.whereAmI(), moves[i]));
       } 
