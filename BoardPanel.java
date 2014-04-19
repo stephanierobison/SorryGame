@@ -23,6 +23,13 @@ public class BoardPanel extends JPanel{
       selected and it's valid moves should be shown
    */
    private Pawn selectedPawn;
+   
+   /**
+      Subsidiary internal state variable. Only used to keep track of
+      a Space where there is a move ambiguity.
+   */
+   private Space selectedSpace;
+   
       /**
          Spaces the selected pawn could be moved to. Updated when
          a pawn is selected.
@@ -41,6 +48,7 @@ public class BoardPanel extends JPanel{
    public BoardPanel(Game game){
       super();
       selectedPawn = null;
+      selectedSpace = null;
       targetSpaces = new ArrayList<Space>();
       this.game = game;
       NUMBER_COLUMNS = game.getBoard().COLUMNS;
@@ -69,6 +77,31 @@ public class BoardPanel extends JPanel{
          result = true;
       return result;
    }
+   
+   //---------------------------
+   public void selectSpace(Space s){
+      selectedSpace = s;
+   }   
+   
+   public void deselectSpace(){
+      selectedSpace = null;
+   }
+   
+   public Space getSelectedSpace(){
+      return selectedSpace;
+   }
+   
+   public boolean isSpaceSelected(){
+      boolean result = false;
+      if (selectedSpace != null)
+         result = true;
+      return result;
+   }
+   
+   
+   //---------------------------
+   
+
 
 //-------------------------------------------------------------------------
    /*
@@ -147,13 +180,18 @@ public class BoardPanel extends JPanel{
       
       //highlightSpace(g, 0 ,0); // TEST ONLY
       
-       
-		// If a pawn is selected then highlight it and it's target move spaces
-      if (selectedPawn != null){
+      
+      // If both a pawn and a space are selected then highlight them both
+      if ((selectedPawn != null) && (selectedSpace != null)){
          highlightSpace(g, selectedPawn.whereAmI());
-         ArrayList<Space> targets = game.getAllTargets(selectedPawn);
+         highlightSpace(g, selectedSpace); 
+      }
+		// If just a pawn is selected then highlight it and it's target move spaces
+      else if (selectedPawn != null){
+         highlightSpace(g, selectedPawn.whereAmI());
+         ArrayList<Move> targets = game.getAllTargets(selectedPawn);
          for (int i = 0; i < targets.size(); i++){
-            highlightSpace(g, targets.get(i));
+            highlightSpace(g, targets.get(i).getTarget());
          }
       }
       // otherwise highlight all selectable pawns

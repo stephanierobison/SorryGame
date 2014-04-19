@@ -107,6 +107,14 @@ public abstract class Ruleset{
    */
    abstract void move(Pawn p, Space s, int move);
 //-------------------------------------------------------------------------
+//-------------------------------------------------------------------------
+   /**
+      Determines if a set of moves landing on a single space creates the 
+      possibility of an ambiguous outcome. For example, a space could
+      potentially be landed on via 
+   */
+   abstract boolean containsAmbiguousMove(ArrayList<Move> moves, Space s);
+//-------------------------------------------------------------------------
 
    protected abstract ArrayList<Move> getSpecialTargets(Board b, Pawn p, Space s, int n);
 

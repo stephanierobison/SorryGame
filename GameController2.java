@@ -36,9 +36,14 @@ public class GameController2{
    public String toString(){
       return game.getBoard().toString();
    }
+
+
+   
+
       //LISTENERS----------------------------------------------------------------
 
     private class BoardListener implements MouseListener{
+       // We're not interested in most mouse events but we need to satisfy the interface
        public void mousePressed(MouseEvent e) {
           // System.out.println("Mouse pressed (# of clicks: "
                  //  + e.getClickCount() + ")");
@@ -59,52 +64,86 @@ public class GameController2{
        }
         
        public void mouseClicked(MouseEvent e) {
-           //System.out.println("X = " + e.getX() + ", Y = " + e.getY());
-           // Want this no matter what
+
+           // Get grid coords of mouse click and clicked on space if applicable
            int clickedX = boardPanel.getGridX(e.getX());
            int clickedY = boardPanel.getGridY(e.getY());
            Space clickedSpace = game.getBoard().getSpace(clickedX, clickedY);
            Pawn clickedPawn;
-           if ((clickedSpace != null) && (SwingUtilities.isLeftMouseButton(e))){ // LEFT CLICK SELECTS (if valid space)
-              //System.out.println("X = " + clickedX + ", Y = " + clickedY);
+           if ((clickedSpace != null) && 
+               !boardPanel.isSpaceSelected() && // left mouse ignored with waiting for a button press
+               (SwingUtilities.isLeftMouseButton(e))){ // LEFT CLICK SELECTS (if valid space)
+
               // TWO UI STATES: Either pawn selected or not
-              
-              if (!boardPanel.isPawnSelected()){ // if not selected could select a pawn
-                  //System.out.println("Selected the Pawn at x = " + clickedX + ", y = " + clickedY);
+              // if no pawn is selected we could select a pawn
+              if (!boardPanel.isPawnSelected()){ 
                   clickedPawn = clickedSpace.getPawn();
+                  // Can only select a pawn if it's that player's turn and if it can be moved
                   if ((clickedPawn != null) && 
                       (clickedPawn.getColor().toString().equals(game.getCurrentPlayer().getColor().toString())) &&
                       (game.getAllTargets(clickedPawn).size() > 0)){
-                     boardPanel.selectPawn(clickedPawn);
-                     //System.out.println("SELECTED - " + selectedPawn.toString());
+                     boardPanel.selectPawn(clickedPawn);  // Actual pawn selection op
                   }
               }
-              else{ // if pawn selected could move it
-                  //System.out.println("PAWN SELECTED");
+              // else if pawn selected we might be able to move it
+              else{ 
+                  // Find all moves which will take the selected pawn to the clicked space
+                  ArrayList<Move> germaneMoves = 
+                                       Move.subsetTargeting(game.getAllTargets(boardPanel.getSelectedPawn()),
+                                                            clickedSpace);
                   
-                  ArrayList<Move> targets = game.getAllTargets(boardPanel.getSelectedPawn());   
-                  //MOVE PAWN
-                  // only do if selected space is valid target
-                  if (Move.subsetTargeting(clickedSpace)){
-                     //System.out.println("Moving selected pawn to space at x = " + clickedSpace.getX() 
-                                  //                                   + ", y = " + clickedSpace.getY());
-                     //boardPanel.getSelectedPawn().moveTo(clickedSpace);
-                      boardPanel.deselectPawn(); // done with the pawn
-                     // NEEDS TO BE DIFFERENT TO ACCOUNT FOR THE 7
-                     game.setMoves(null);
-                     game.nextTurn();
-                  }
+                  // Only proceed if we CAN move to the selected space
+                  if (germaneMoves.size() > 0){
+                     // If there are no swap/bump ambiguities we can simply pick any
+                     // move from the subset - defaults to first one
+                     // It is important to note that a seven move may NEVER result in
+                     // this type of ambiguity - a 7 always bumps
+                     if (!game.getRules().containsAmbiguousMove(germaneMoves, clickedSpace)){
+                           game.getRules().move(boardPanel.getSelectedPawn(),
+                                                clickedSpace,
+                                                germaneMoves.get(0).getMove()); // actual move op
+                         boardPanel.deselectPawn(); // done with pawn
+                         
+                         if (germaneMoves.get(0).getChain() != null){ // A chained multimove doesn't end the player's turn
+                           game.setMoves(new int[] {germaneMoves.get(0).getChain().intValue()});
+                         }
+                         else{
+                           game.nextTurn();  // but most moves simply end the player's turn
+                         }
+                         
+                   
+   
+                     }
+                     // If there is an ambiguous move then we need to put boardpanel
+                     // into it's special bump or swap query state to handle 
+                     // (uses button listeners)
+                     else{
+                        boardPanel.selectSpace(clickedSpace);
+                        System.out.println("Ambiguity detected");
+                     }
                   
-              }
+                  
+                  }// end of CAN move to the selected space
+                  
+                 
+                  
+              }// end if pawn selected we might be able to move it
+
            }// END IF LEFT CLICK
-           else if (SwingUtilities.isRightMouseButton(e)){ // right click deselects
-               //System.out.println("RIGHT CLICK");
-               boardPanel.deselectPawn();
-               
-               //System.out.println("RIGHT CLICK DESELECTS");           
+           
+           // IF RIGHT CLICK
+           else if (SwingUtilities.isRightMouseButton(e)){ 
+               // right click always deselects one "level" of stuff in boardpanel
+               if (boardPanel.isSpaceSelected())
+                  boardPanel.deselectSpace();
+               else
+                  boardPanel.deselectPawn(); 
            }// END IF RIGHT CLICK
+           
+           // Always redraw the GUI after a mouse event - something may have changed
            boardPanel.revalidate();
        }
+   
     }// end of class boardListener
    //TEST---------------------------------------------------------------------
   

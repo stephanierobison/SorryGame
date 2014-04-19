@@ -112,4 +112,32 @@ public class SimpleRules extends Ruleset{
       
       return result;
    }
+   
+   
+   public boolean containsAmbiguousMove(ArrayList<Move> moves, Space s){
+      boolean swap = false;
+      boolean move = false;
+      Move currentMove;
+      // In the basic rules the only possible source of ambiguity comes from the eleven
+      // card - a pawn could be bumped by moving eleven spaces OR swapped using the
+      // eleven card's swap ability
+      // Therefore the simple rule's ambiguity test is to check for an ELEVEN_SWAP AND
+      //  an 11 move both targeting the given space WITH a pawn
+      
+      if (s.isEmpty()) return false; // if the target space is empty then don't bother
+      
+      for (int i = 0; i < moves.size(); i++){
+         currentMove = moves.get(i);
+         if (s == currentMove.getTarget()){ // safety check - need to be talking about same space
+            if (moves.get(i).getMove() == ELEVEN_SWAP){
+               swap = true;
+            }
+            else if (moves.get(i).getMove() == 11){
+               move = true;
+            }
+         }
+      }
+      System.out.println("Swap = " + Boolean.toString(swap) + "\nMove = " + Boolean.toString(move));
+      return (swap && move);
+   }
 }// end of ruleset

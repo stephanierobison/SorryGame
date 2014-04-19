@@ -29,15 +29,15 @@ public class Game{
    public void nextTurn(){
       currentPlayerIndex++;
       currentPlayerIndex = currentPlayerIndex % players.size();
-      moves = new int[] {Ruleset.START_OUT,Ruleset.ELEVEN_SWAP, -1, 1, 10, -10}; // Replace with call to Deck
-      //moves = new int[] {1}; // Replace with call to Deck
+      //moves = new int[] {Ruleset.START_OUT,Ruleset.ELEVEN_SWAP, -1, 1, 10, -10}; // Replace with call to Deck
+      moves = new int[] {1, -1, 11, Ruleset.ELEVEN_SWAP, Ruleset.START_OUT}; // Replace with call to Deck
       //moves = new int[] {deck.drawCard().getRank()}; // change to use ruleset
       System.out.println(getCurrentPlayer().getColor().toString() + 
                                        "PLAYER'S TURN\n============================");
       System.out.println("They drew a " + Integer.toString(moves[0]));
       if (getMoveablePawns().size() == 0){
          System.out.println("They cannot move.");
-         nextTurn();
+         nextTurn();          // MOVE TO GAME CONTROLLER!!!!
       }
 
    }
@@ -128,7 +128,6 @@ public class Game{
       return result;
          
    }
-
 
 
 }//end of class
