@@ -7,13 +7,16 @@ import javax.swing.*;
 public class GameController2{
    private Game game;
    private BoardPanel boardPanel;
+   private GamePanel gamePanel;
+   
+   private boolean aiThinking;
    
    // Default 4 players, simple rules and board.
    public GameController2(){
       // Make the Players
       ArrayList<Player> p = new ArrayList<Player>();
-      p.add(new Player(Color.red));
-      p.add(new Player(Color.blue));
+      p.add(new Player(Color.red, "PLAYER 1", "player1.jpg", true));
+      p.add(new Player(Color.blue, "PLAYER 2", "player2.jpg", true));
       //p.add(new Player(Color.yellow));
       //p.add(new Player(Color.green));      
       
@@ -23,7 +26,45 @@ public class GameController2{
       game = new Game(b , new SimpleRules(), p);
       boardPanel = new BoardPanel(game);
       boardPanel.addMouseListener(new BoardListener());
+      
+      
+      
+      gamePanel = new GamePanel(game);
+      gamePanel.getOkButton().addActionListener(new ButtonListener());
+      gamePanel.getBumpButton().addActionListener(new ButtonListener());
+      gamePanel.getSwapButton().addActionListener(new ButtonListener());
+      
+      
+      startTurn();      
+
+      
    }
+   
+   private void startTurn(){
+      
+      gamePanel.update();
+      
+      // set up first move
+      if (!game.isCurrentPlayerHuman()){
+         aiThinking = true;
+         aiTurn();   // AI Turns are driven by methods
+      }
+      else{
+         aiThinking = false; // Human player turns are driven by events
+      }
+   }
+   
+   
+   private void aiTurn(){
+   
+   
+   }
+   
+   private void aiMove(){
+      
+      aiThinking = false;
+   }
+   
    
    public Game getGame(){
       return game;
@@ -32,6 +73,10 @@ public class GameController2{
    public BoardPanel getBoardPanel(){
       return boardPanel;
    }
+ 
+   public GamePanel getGamePanel(){
+      return gamePanel;
+   } 
    
    public String toString(){
       return game.getBoard().toString();
@@ -45,7 +90,8 @@ public class GameController2{
     private class BoardListener implements MouseListener{
        // We're not interested in most mouse events but we need to satisfy the interface
        public void mousePressed(MouseEvent e) {
-          // System.out.println("Mouse pressed (# of clicks: "
+          //System.out.println("CLICK");
+          //System.out.println("Mouse pressed (# of clicks: "
                  //  + e.getClickCount() + ")");
            
        }
@@ -145,6 +191,41 @@ public class GameController2{
        }
    
     }// end of class boardListener
+   
+   
+   
+   private class ButtonListener implements ActionListener{
+   
+      public void actionPerformed(ActionEvent e){
+         String action = e.getActionCommand();
+         //System.out.println(action);
+         
+         if (action.equals(GamePanel.OK_TEXT)){
+         
+         }
+         else if (action.equals(GamePanel.SWAP_TEXT)){
+            if (!boardPanel.isSpaceSelected()){
+               System.out.println("ERROR! Space not selected.");
+            }
+            else{
+            
+            }
+         }
+         else if (action.equals(GamePanel.BUMP_TEXT)){
+            if (!boardPanel.isSpaceSelected()){
+               System.out.println("ERROR! Space not selected.");
+            }
+            else{
+            
+            }
+         }
+
+         
+      }
+   
+   
+   }// end of class ButtonListener
+   
    //TEST---------------------------------------------------------------------
   
    
@@ -155,7 +236,7 @@ public class GameController2{
      
       JFrame x = new JFrame();
       x.setTitle("");  // name the window
-		x.setSize(550, 550);  // set size
+		x.setSize(600, 600);  // set size
 		//setLocationRelativeTo(null);
 		x.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	

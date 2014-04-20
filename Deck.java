@@ -6,8 +6,40 @@ import java.util.*;
  */
 
 public class Deck {
-    public static final int[] CARD_RANK = {-1, 1, 2, 3, 4, 5, 7, 8, 10, 11, 12};
+    public static final int[] CARD_RANK = {0, 1, 2, 3, 4, 5, 7, 8, 10, 11, 12}; // 0 is SORRY
     public final int DECK_SIZE = 44;
+    
+    public static final int[][] CARD_VALUES = 
+                                   {{Ruleset.SORRY_SWAP},   // 0 
+                                   {Ruleset.START_OUT, 1},  // 1
+                                   {Ruleset.START_OUT, 2},  // 2
+                                   {3},                     // 3
+                                   {-4},                    // 4
+                                   {5},                     // 5
+                                   {},                      // 6 (no moves)
+                                   {7},                     // REPLACE WITH SEVEN_MOVE!!!
+                                   {8},                     // 8
+                                   {},                      // 9 (no moves)
+                                   {-1,10},                 // 10
+                                   {Ruleset.ELEVEN_SWAP, 11},// 11
+                                   {12}                     // 12
+                                  };
+        public static final String[] CARD_TEXT = {
+            "SORRY! Can swap a pawn in your start with an enemy pawn!",
+            "ONE. Can either start a pawn out of start or move a pawn forwards one space.", 
+            "TWO. Can either start a pawn out of start or move a pawn forwards two spaces.",
+            "THREE. Can move a pawn forwards three spaces.",
+            "FOUR. Can move a pawn backwards four spaces.", 
+            "FIVE. Can move a pawn forwards five spaces.",
+            "SIX. ERROR! THERE IS NO SIX CARD!",
+            "SEVEN. Can split seven forwards moves between two pawns. Be aware that ALL the" + 
+            " moves must ve legally consumed using just the two pawns.",
+            "EIGHT. Can move a pawn forwards eight spaces.",
+            "NINE. ERROR! THERE IS NO NINE CARD!",
+            "TEN. Can move a pawn forwards ten spaces OR back one space.",
+            "ELEVEN. Can move a pawn forwards eleven spaces OR swap one of your pawns on the " +
+            "track with an enemy pawn on the track.",
+            "TWELVE. Can move a pawn forwards twelve spaces."};
 
     List<Card> deck;
     Card topCard;
@@ -27,11 +59,17 @@ public class Deck {
         shuffle();
     }//createDeck
 
+
+    public int draw(){
+      Card c = drawCard();
+      return c.getRank();
+    }  
+      
     /**
 	* Using an iterator, returns the topcard whilst also removing it from the deck.  Will recursively call makeDeck is list empty.
      * Implements a ListIterator to return the top card from the deck List, and removes the returned card from the deck.
      */
-    public Card drawCard() {
+    private Card drawCard() {
         ListIterator<Card> deckIterator = deck.listIterator();
         
 	if (deckIterator.hasNext()){
@@ -94,60 +132,7 @@ public class Deck {
 		public int getRank() {
 			return rank;
 	    	}//getRank
-		/*
-      public String getDirections() {
-			theRank = getRank();
-			
-			if (theRank == 0){
-				direction = "Move any one pawn from Start to a square occupied by any opponent, " +
-					"sending that pawn back to its own Start. If there are no pawns on the player's "+
-					"Start, or no opponent's pawns on any squares, the turn is lost. "+
-					"If an enemy's pawn is swapped while it is in front of your HOME, "+
-					"your pawn is switched EXACTLY where your enemy's pawn is, not at your HOME."								
-			if( theRank == 1){
-				direction = "Move a pawn from Start or move a pawn 1 space forward.";
-			}
-			if( theRank == 2){
-				direction = "Move a pawn from Start or move a pawn 2 spaces forward.";
-			}
-			if( theRank == 3){
-				direction = "Move a pawn 3 spaces forward.";
-			}
-			if(theRank == 4){
-				direction = "Move a pawn 4 spaces backward.";
-			}
-			if(theRank == 5){
-				direction = "Move a pawn 5 spaces forward.";
-			}
-			if(theRank == 7){
-				direction = "Move one pawn 7 spaces forward or split the 7 spaces between two pawns "+
-					"(such as four spaces for one pawn and three for another). This makes it possible "+
-					"for two pawns to enter Home on the same turn, for example. "+
-					"The 7 cannot be split into a 6 and 1 or a 5 and 2 for the purposes of "+
-					"moving out of Start. The entire seven spaces must be used one way or the other or the turn is lost."
-			}
-			if (theRank == 8){
-				direction = "Move a pawn 8 spaces forward.";
-			}
-			
-			if(theRank == 10){
-				direction = "Move a pawn 10 spaces forward or 1 space backward. If a player cannot go forward ten"
-			}
-			
-			if(theRank == 11){
-				direction = "Move 11 spaces forward or switch places with one opposing pawn. "+
-					"A player that cannot move 11 spaces is not forced to switch and instead can "+
-					"forfeit the turn."
-			}
-			if(theRank == 12){
-				direction = "Move a pawn 12 spaces forward.";
-			}
-
-		return direction;
-				
-			
-		}
-	    */    
+  
 		public String toString() {
 			String cardString = "";
 	    	return Integer.toString(this.rank);
