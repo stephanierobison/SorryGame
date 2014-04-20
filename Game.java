@@ -33,7 +33,7 @@ public class Game{
       
       currentCard = deck.draw();
       moves = Deck.CARD_VALUES[currentCard]; // !!!!!!!!!!!!!! REPLACE !!!!!!!!!!!!!!!!!!
-      moves = new int[] {1, -1, 11, Ruleset.ELEVEN_SWAP, Ruleset.START_OUT}; // Replace with call to Deck
+      moves = new int[] {1, -1, -11, 11, Ruleset.ELEVEN_SWAP, Ruleset.START_OUT}; // Replace with call to Deck
 
       /*
       System.out.println(getCurrentPlayer().getColor().toString() + 

@@ -50,7 +50,11 @@ public class GameController2{
          aiTurn();   // AI Turns are driven by methods
       }
       else{
-         aiThinking = false; // Human player turns are driven by events
+         aiThinking = false; // Human player turns are driven by events...
+         if (game.getMoveablePawns().size() == 0){ // ...unless they can't do anything
+            gamePanel.appendMessage("You cannot move and must forfeit your turn.");
+            gamePanel.okToProceed();
+         }
       }
    }
    
@@ -89,7 +93,7 @@ public class GameController2{
 
     private class BoardListener implements MouseListener{
        // We're not interested in most mouse events but we need to satisfy the interface
-       public void mousePressed(MouseEvent e) {
+       public void mouseClicked(MouseEvent e) {
           //System.out.println("CLICK");
           //System.out.println("Mouse pressed (# of clicks: "
                  //  + e.getClickCount() + ")");
@@ -109,8 +113,8 @@ public class GameController2{
            //System.out.println("Mouse exited");
        }
         
-       public void mouseClicked(MouseEvent e) {
-
+       public void mousePressed(MouseEvent e) {
+            //System.out.println("CLICK");
            // Get grid coords of mouse click and clicked on space if applicable
            int clickedX = boardPanel.getGridX(e.getX());
            int clickedY = boardPanel.getGridY(e.getY());
@@ -155,6 +159,7 @@ public class GameController2{
                          }
                          else{
                            game.nextTurn();  // but most moves simply end the player's turn
+                           startTurn();
                          }
                          
                    
@@ -165,7 +170,7 @@ public class GameController2{
                      // (uses button listeners)
                      else{
                         boardPanel.selectSpace(clickedSpace);
-                        System.out.println("Ambiguity detected");
+                        gamePanel.ambiguityQuery();
                      }
                   
                   
@@ -180,8 +185,10 @@ public class GameController2{
            // IF RIGHT CLICK
            else if (SwingUtilities.isRightMouseButton(e)){ 
                // right click always deselects one "level" of stuff in boardpanel
-               if (boardPanel.isSpaceSelected())
-                  boardPanel.deselectSpace();
+               if (boardPanel.isSpaceSelected()){
+                     boardPanel.deselectSpace();
+                     gamePanel.update();
+                  }
                else
                   boardPanel.deselectPawn(); 
            }// END IF RIGHT CLICK
@@ -201,6 +208,13 @@ public class GameController2{
          //System.out.println(action);
          
          if (action.equals(GamePanel.OK_TEXT)){
+            if (aiThinking){
+            
+            }
+            else{
+               game.nextTurn();
+               startTurn();
+            }
          
          }
          else if (action.equals(GamePanel.SWAP_TEXT)){
@@ -208,15 +222,27 @@ public class GameController2{
                System.out.println("ERROR! Space not selected.");
             }
             else{
-            
-            }
+               game.getRules().move(boardPanel.getSelectedPawn(),
+                                    boardPanel.getSelectedSpace(),
+                                    Ruleset.ELEVEN_SWAP); // use swap move
+               boardPanel.deselectPawn(); // done with pawn...
+               boardPanel.deselectSpace(); // ...and Space
+               game.nextTurn();  // but most moves simply end the player's turn
+               startTurn();
+            } 
          }
          else if (action.equals(GamePanel.BUMP_TEXT)){
             if (!boardPanel.isSpaceSelected()){
                System.out.println("ERROR! Space not selected.");
             }
             else{
-            
+               game.getRules().move(boardPanel.getSelectedPawn(),
+                                    boardPanel.getSelectedSpace(),
+                                    11); // use regular move
+               boardPanel.deselectPawn(); // done with pawn...
+               boardPanel.deselectSpace(); // ...and Space
+               game.nextTurn();  // but most moves simply end the player's turn
+               startTurn();            
             }
          }
 

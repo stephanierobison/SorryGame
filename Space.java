@@ -56,7 +56,7 @@ public class Space{
    backwards move. */
    private ArrayList<Space> backwardsNeighbors;
    
-   private ArrayList<Space> slideTargets;
+   private ArrayList<Space> slideTargets; // the LAST element is the slide END
 
    /** Each Space may be occupied by up to one Token.*/
    private Token token;
@@ -171,13 +171,21 @@ public class Space{
    public Space getSlideEnd(){
       Space result = null;
       if (slideTargets.size() > 0){
-         result = slideTargets.get(0);      
+         result = slideTargets.get(slideTargets.size() - 1);      
       }
       return result;
    }
    
    public void addSlideTarget(Space s){
       slideTargets.add(s);
+   }
+   
+   public boolean isSlider(){
+      boolean result = false;
+      if (slideTargets.size() > 0){
+         result = true;      
+      }
+      return result;
    }
    
 //-------------------------------------------------------------------------
@@ -198,6 +206,10 @@ public class Space{
       s.append("\tBN's: ");
       for (int i = 0; i < backwardsNeighbors.size(); i++){
          s.append(backwardsNeighbors.get(i).getTag() + " ");
+      }
+      s.append("\tST's: ");
+      for (int i = 0; i < slideTargets.size(); i++){
+         s.append(slideTargets.get(i).getTag() + " ");
       }
       if (token != null){  //NEED TO MAKE TYPE SAFE!!!!
          s.append("\t" + token.toString());
@@ -284,7 +296,9 @@ public class Space{
          g.drawLine(xLow,yLow, xHigh, yHigh);
          g.drawLine(xLow,yHigh, xHigh, yLow);
       }
-      else if (trait == Ruleset.SLIDER_START){
+      if (slideTargets.size() > 0){
+         g.drawArc(xLow, yLow, xHigh - xLow, yHigh - yLow, 0, 360);
+         //System.out.println("I'M A SLIDE START - " + tag);
       
       }
    }

@@ -25,7 +25,6 @@ public class GamePanel extends JPanel{
          private JLabel[] portraits; 
       
       private JPanel cardPanel;
-         private JLabel cardLabel;
       
       private JPanel messagePanel;
          private JTextArea messageTextArea;
@@ -57,7 +56,7 @@ public class GamePanel extends JPanel{
             cardPanel = new JPanel();
             cardPanel.setBackground(Color.red);
                image = new ImageIcon("card.jpg");
-               cardLabel = new JLabel("", image, JLabel.CENTER);
+               JLabel cardLabel = new JLabel("", image, JLabel.CENTER);
                cardPanel.add(cardLabel, BorderLayout.CENTER );
             
             messagePanel = new JPanel();
@@ -87,7 +86,7 @@ public class GamePanel extends JPanel{
       
       add(UIPanel);      
       setBackground(Color.black);
-      
+      setSize(600,600);
       update();
       
    }
@@ -150,12 +149,21 @@ public class GamePanel extends JPanel{
       }
       
       // show correct card
+      int card = game.getCurrentCard();
+      String cardFileName = "card" + Integer.toString(card) + ".jpg";
+      image = new ImageIcon(cardFileName);
+      cardPanel.removeAll();
+      JLabel cardLabel = new JLabel("", image, JLabel.CENTER);
+      cardPanel.add(cardLabel, BorderLayout.CENTER );
       
       // show current message prompt
-      int card = game.getCurrentCard();
+      
       clearMessage();
       appendMessage(game.getCurrentPlayer().getName() + "'s turn");
       appendMessage("They drew a " + Deck.CARD_TEXT[card]);
+      
+      // clear buttons (buttons placed by GameController)
+      buttonPanel.removeAll();
       
      
    }

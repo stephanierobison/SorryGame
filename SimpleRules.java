@@ -71,6 +71,22 @@ public class SimpleRules extends Ruleset{
       }
       p.moveTo(s); // redundant for eleven move but OK
       
+      // BOOK KEEPING
+      // If on valid slider then SLIDE
+      if ( s.isSlider() && 
+           (!s.getTraitColor().toString().equals(p.getColor().toString()))){
+           
+           // send everyone on slide home
+           ArrayList<Space> slideTargets = s.getSlideTargets();
+           for (int i = 0; i < slideTargets.size(); i++){ 
+               if (!slideTargets.get(i).isEmpty())
+                  slideTargets.get(i).getPawn().goHome();
+           }
+           // send pawn to end of slide
+           p.moveTo(s.getSlideEnd());
+         
+      }
+      
          
    }
    

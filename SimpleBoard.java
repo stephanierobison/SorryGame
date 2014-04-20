@@ -228,6 +228,57 @@ public class SimpleBoard extends Board{
          spaces.get(i).setXY(6 + (i % 2), (int)Math.floor(((double)(i) - 108.0)/2.0) + 12);
       } 
       
+      
+      // SET SLIDERS
+      //red
+      spaces.get(1).setTraitColor(Color.red);
+         spaces.get(1).addSlideTarget(spaces.get(2));
+         spaces.get(1).addSlideTarget(spaces.get(3));      
+         spaces.get(1).addSlideTarget(spaces.get(4));
+      
+      spaces.get(9).setTraitColor(Color.red);
+         spaces.get(9).addSlideTarget(spaces.get(10));
+         spaces.get(9).addSlideTarget(spaces.get(11));      
+         spaces.get(9).addSlideTarget(spaces.get(12));
+         spaces.get(9).addSlideTarget(spaces.get(13));
+      
+      //blue
+      spaces.get(16).setTraitColor(Color.blue);
+         spaces.get(16).addSlideTarget(spaces.get(17));
+         spaces.get(16).addSlideTarget(spaces.get(18));      
+         spaces.get(16).addSlideTarget(spaces.get(19));
+      
+      spaces.get(24).setTraitColor(Color.blue);
+         spaces.get(24).addSlideTarget(spaces.get(25));
+         spaces.get(24).addSlideTarget(spaces.get(26));      
+         spaces.get(24).addSlideTarget(spaces.get(27));
+         spaces.get(24).addSlideTarget(spaces.get(28));
+         
+      // yellow
+      spaces.get(31).setTraitColor(Color.yellow);
+         spaces.get(31).addSlideTarget(spaces.get(32));
+         spaces.get(31).addSlideTarget(spaces.get(33));      
+         spaces.get(31).addSlideTarget(spaces.get(34));
+      
+      spaces.get(39).setTraitColor(Color.yellow);
+         spaces.get(39).addSlideTarget(spaces.get(40));
+         spaces.get(39).addSlideTarget(spaces.get(41));      
+         spaces.get(39).addSlideTarget(spaces.get(42));
+         spaces.get(39).addSlideTarget(spaces.get(43));
+         
+      //green
+      spaces.get(46).setTraitColor(Color.green);
+         spaces.get(46).addSlideTarget(spaces.get(47));
+         spaces.get(46).addSlideTarget(spaces.get(48));      
+         spaces.get(46).addSlideTarget(spaces.get(49));
+      
+      spaces.get(54).setTraitColor(Color.green);
+         spaces.get(54).addSlideTarget(spaces.get(55));
+         spaces.get(54).addSlideTarget(spaces.get(56));      
+         spaces.get(54).addSlideTarget(spaces.get(57));
+         spaces.get(54).addSlideTarget(spaces.get(58));
+
+
    }// end of make()
    
 //*************************************************************************
