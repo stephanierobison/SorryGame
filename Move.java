@@ -23,6 +23,10 @@ public class Move{
       return chain;
    }
    
+   public void setChain(int i){
+      chain = new Integer(i);
+   }
+   
    public Space getTarget(){
       return target;
    }

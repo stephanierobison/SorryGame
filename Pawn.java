@@ -56,6 +56,7 @@ public class Pawn extends Token{
       moveTo(startSpace);
    }
    
+  
    public void moveTo(Space s){
       Space whereIWas = iAmOn;
       if (whereIWas != null)

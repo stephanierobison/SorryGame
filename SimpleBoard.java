@@ -115,6 +115,7 @@ public class SimpleBoard extends Board{
          spaces.add(new Space(Integer.toString(i)));
          spaces.get(68).addForwardsNeighbor(spaces.get(i));
          spaces.get(i).setColor(Color.red);
+         spaces.get(i).setTrait(Ruleset.HOME);
          spaces.get(i).setXY(3 - (i % 2), (int)Math.floor(((double)(i) - 69.0)/2.0) + 6);
       }
       
@@ -152,6 +153,7 @@ public class SimpleBoard extends Board{
          spaces.add(new Space(Integer.toString(i)));
          spaces.get(81).addForwardsNeighbor(spaces.get(i));
          spaces.get(i).setColor(Color.blue);
+         spaces.get(i).setTrait(Ruleset.HOME);
          spaces.get(i).setXY(8 + (i % 2), (int)Math.floor(((double)(i) - 82.0)/2.0) + 2);
       }
       
@@ -189,6 +191,7 @@ public class SimpleBoard extends Board{
          spaces.add(new Space(Integer.toString(i)));
          spaces.get(94).addForwardsNeighbor(spaces.get(i));
          spaces.get(i).setColor(Color.yellow);
+         spaces.get(i).setTrait(Ruleset.HOME);
          spaces.get(i).setXY(13 - (i % 2), (int)Math.floor(((double)(i) - 95.0)/2.0) + 8);
       }
       
@@ -225,6 +228,7 @@ public class SimpleBoard extends Board{
          spaces.add(new Space(Integer.toString(i)));
          spaces.get(107).addForwardsNeighbor(spaces.get(i));
          spaces.get(i).setColor(Color.green);
+         spaces.get(i).setTrait(Ruleset.HOME);
          spaces.get(i).setXY(6 + (i % 2), (int)Math.floor(((double)(i) - 108.0)/2.0) + 12);
       } 
       

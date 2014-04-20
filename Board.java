@@ -175,6 +175,31 @@ public abstract class Board{
       }
       return result;
    }// end getTokens()
+   
+   
+   public ArrayList<Pawn> getPawns(){
+      ArrayList<Pawn> result = new ArrayList<Pawn>();
+      Pawn p;
+      ArrayList<Token> t = getTokens();
+      for (int i = 0; i < t.size(); i++){
+         if (t.get(i) instanceof Pawn){
+            p = (Pawn)t.get(i);
+            result.add(p);
+         }
+      }
+      return result;
+   }
+   
+      public ArrayList<Pawn> getPawns(Color c){
+      ArrayList<Pawn> result = new ArrayList<Pawn>();
+      ArrayList<Pawn> ps = getPawns();
+      for (int i = 0; i < ps.size(); i++){
+         if (ps.get(i).getColor().toString().equals(c.toString())){
+            result.add(ps.get(i));
+         }
+      }
+      return result;
+   }
 
 //-------------------------------------------------------------------------
    

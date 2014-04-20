@@ -33,8 +33,9 @@ public class Game{
       
       currentCard = deck.draw();
       moves = Deck.CARD_VALUES[currentCard]; // !!!!!!!!!!!!!! REPLACE !!!!!!!!!!!!!!!!!!
-      moves = new int[] {1, -1, -11, 11, Ruleset.ELEVEN_SWAP, Ruleset.START_OUT}; // Replace with call to Deck
-
+      //moves = new int[] {1, -1, -11, 11, Ruleset.ELEVEN_SWAP, Ruleset.START_OUT}; // Replace with call to Deck
+//      moves = new int[] {Ruleset.SEVEN, Ruleset.START_OUT}; // Replace with call to Deck
+      // moves = new int[] {-4, -1, 1, 2, 5, 10, 20, Ruleset.START_OUT};
       /*
       System.out.println(getCurrentPlayer().getColor().toString() + 
                                        "PLAYER'S TURN\n============================");
@@ -44,6 +45,26 @@ public class Game{
          nextTurn();          // MOVE TO GAME CONTROLLER!!!!
       }*/
 
+   }
+   
+   public Color winner(){
+      Color result = null;
+      Color currentColor;
+      boolean didWin;
+      ArrayList<Pawn> currentPawns;
+      for (int i = 0; i < players.size(); i++){
+         currentColor = players.get(i).getColor();
+         currentPawns = board.getPawns(currentColor);
+         didWin = true;
+         for (int j = 0; j < currentPawns.size(); j++){
+            didWin = didWin && currentPawns.get(j).whereAmI().isAHome();
+         }
+         if (didWin){
+            result = currentColor;
+            System.out.println("WE HAVE A WINNER! - Color: " + currentColor.toString());
+         }
+      }
+      return result;
    }
    
    public boolean canCurrentPlayerMove(){

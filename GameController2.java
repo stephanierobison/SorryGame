@@ -42,6 +42,11 @@ public class GameController2{
    
    private void startTurn(){
       
+      Color winColor = game.winner();
+      if (winColor != null){
+         System.out.println("SOMEONE ALREADY WON!");
+      }
+      
       gamePanel.update();
       
       // set up first move

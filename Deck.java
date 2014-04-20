@@ -17,7 +17,7 @@ public class Deck {
                                    {-4},                    // 4
                                    {5},                     // 5
                                    {},                      // 6 (no moves)
-                                   {7},                     // REPLACE WITH SEVEN_MOVE!!!
+                                   {Ruleset.SEVEN},         // SEVEN IS SPECIAL
                                    {8},                     // 8
                                    {},                      // 9 (no moves)
                                    {-1,10},                 // 10

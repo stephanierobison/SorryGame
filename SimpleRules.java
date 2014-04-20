@@ -106,8 +106,41 @@ public class SimpleRules extends Ruleset{
             
          }
       }
+      // 77777777777777777777777777777777777777777777777777777777777
       else if (n == SEVEN){
-      
+         result.addAll(getTargets(b,p,s,7)); // can always try vanilla 7
+
+         // Find allied pawns
+         ArrayList<Pawn> otherAlliedPawns = new ArrayList<Pawn>();
+         ArrayList<Token> tokens = b.getTokens();
+         Pawn currentPawn;
+         for (int i = 0; i < tokens.size(); i++){
+            if ((tokens.get(i) instanceof Pawn)&&
+                (tokens.get(i) != p)){ // check type before casting
+               currentPawn = (Pawn)tokens.get(i);
+               if (currentPawn.getColor().toString().equals(p.getColor().toString())) // check color before adding
+                  otherAlliedPawns.add(currentPawn);
+            } 
+         }
+         
+         // MIGHT be able to add 6 through 1 IF a move would be possible after
+         ArrayList<Move> intermediateResult;
+         Pawn currentAlly;
+         for (int i = 1; i <= 6; i++){
+            intermediateResult = new ArrayList<Move>();
+            for (int j = 0; j < otherAlliedPawns.size(); j++){
+               currentAlly = otherAlliedPawns.get(j);
+               intermediateResult.addAll(getTargets(b, currentAlly, currentAlly.whereAmI(), 7 - i));
+            }
+            if (intermediateResult.size() > 0){
+               intermediateResult = getTargets(b,p,s,i);
+               for (int k = 0; k < intermediateResult.size(); k++)
+                  intermediateResult.get(k).setChain(7 - i); 
+               result.addAll(intermediateResult); 
+            }
+         }
+         
+         return result;
       }
       else if ((n == SORRY_SWAP) && (p.whereAmI().getTrait() == START)){
          ArrayList<Pawn> victims = b.getUnsafePawns();
