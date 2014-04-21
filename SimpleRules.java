@@ -1,17 +1,23 @@
 import java.util.*;
 
 
+
 public class SimpleRules extends Ruleset{
-   
+  
+ 
+  
+
 
 //*************************************************************************
 // CONSTRUCTORS
 //*************************************************************************   
-   public SimpleRules(){
-   }
+
 //*************************************************************************
 // PUBLIC METHODS
-//*************************************************************************   
+//*************************************************************************  
+
+
+    
 //-------------------------------------------------------------------------
 /*
    Note that the "passable" and "landable" properties will change based
@@ -64,9 +70,11 @@ public class SimpleRules extends Ruleset{
       // bumping them
       if (move == Ruleset.ELEVEN_SWAP){
          p.swapWith(p2);
+         incSwaps();
       }
       else if(!s.isEmpty() && (s.getToken() instanceof Pawn)){ // BUMP!
          p2.goHome();
+         incBumps();
          
       }
       p.moveTo(s); // redundant for eleven move but OK
@@ -79,8 +87,10 @@ public class SimpleRules extends Ruleset{
            // send everyone on slide home
            ArrayList<Space> slideTargets = s.getSlideTargets();
            for (int i = 0; i < slideTargets.size(); i++){ 
-               if (!slideTargets.get(i).isEmpty())
+               if (!slideTargets.get(i).isEmpty()){
                   slideTargets.get(i).getPawn().goHome();
+                  incBumps();
+               }
            }
            // send pawn to end of slide
            p.moveTo(s.getSlideEnd());

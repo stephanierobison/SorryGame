@@ -12,7 +12,7 @@ public class BoardPanel extends JPanel{
    private final static double FILL_SCALE = 0.75; // MUST BE > 0 and < 1
 
    private final static Color DEFAULT_TOKEN_COLOR = Color.pink;
-   private final static Color VALID_TARGET_COLOR = Color.orange;
+   private final static Color VALID_TARGET_COLOR = Color.pink;
 
 //*************************************************************************
 // INSTANCE VARIABLES
@@ -263,7 +263,7 @@ public class BoardPanel extends JPanel{
       int xHigh = getHighPixelX(x);  
       int yLow = getLowPixelY(y);
       int yHigh = getHighPixelY(y);
-      g.setColor(Color.pink);                   // NEED TO CHANGE
+      g.setColor(VALID_TARGET_COLOR);                   // NEED TO CHANGE
       Graphics2D g2 = (Graphics2D) g;
       int k = 6;
       g2.setStroke(new BasicStroke(k));

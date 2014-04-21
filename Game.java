@@ -28,6 +28,7 @@ public class Game{
    
    // Mutates state to get next turn
    public void nextTurn(){
+      rules.incTurns();
       currentPlayerIndex++;
       currentPlayerIndex = currentPlayerIndex % players.size();
       

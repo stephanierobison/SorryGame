@@ -188,6 +188,15 @@ public class Space{
       return result;
    }
    
+   public boolean isSafeForMe(Player p){
+      boolean result = false;
+      if (p.getColor().toString().equals(color.toString())){
+         result = true;
+         System.out.println("Safe move detected.");
+      }
+      return result;
+   }
+   
 //-------------------------------------------------------------------------
    /**
       @return  String   A String representation of the Space.

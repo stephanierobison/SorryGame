@@ -5,19 +5,27 @@ public class Player{
    private Color color;
    private String name;
    private String portrait;
-   private boolean isHuman;
+   private int AIType;
    
-   public Player(Color c, String name, String portrait, boolean human){
+   public Player(Color c, String name, String portrait, int AIType){
       
       color = c;
       this.name = name;
       this.portrait = portrait;
-      this.isHuman = human;
+      this.AIType = AIType;
    
    }
    
    public boolean isHuman(){
-      return isHuman;
+      boolean result = true;
+      if (AIType != AIRules.HUMAN)
+         result = false;
+         
+      return result;
+   }
+   
+   public int getAIType(){
+      return AIType;
    }
    
    public Color getColor(){

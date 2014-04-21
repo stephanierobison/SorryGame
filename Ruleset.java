@@ -1,10 +1,16 @@
 import java.util.*;
-
+import java.io.IOException;
 
 public abstract class Ruleset{
 //*************************************************************************
 // CONSTANTS
 //*************************************************************************
+   
+   public final static String GLOBAL_RECORD = "global.txt";
+   public final static String CURRENT_RECORD = "current.txt";
+   
+   private FileHandler global;
+   private FileHandler current;
    
    // Trait Values
    public static final int NO_TRAIT = 0; 
@@ -24,6 +30,63 @@ public abstract class Ruleset{
 //*************************************************************************
 // PUBLIC METHODS
 //*************************************************************************   
+   
+   public Ruleset(){
+      try{
+         global = new FileHandler(GLOBAL_RECORD);
+         current = new FileHandler(CURRENT_RECORD); 
+         current.clear();        
+      }
+      catch (IOException e){
+         System.out.println("RULES CANNOT OPEN RECORD FILES!");
+      }
+   
+   }
+   
+   public void incTurns(){
+      try{
+         global.incTurns();
+         current.incTurns();
+      }
+      catch (IOException e){
+         System.out.println("RULES CANNOT OPEN RECORD FILES!");
+      }
+   }
+
+   public void incSwaps(){
+      try{
+         global.incSwaps();
+         current.incSwaps();
+      }
+      catch (IOException e){
+         System.out.println("RULES CANNOT OPEN RECORD FILES!");
+      }
+   }   
+
+   public void incBumps(){
+      try{
+         global.incBumps();
+         current.incBumps();
+      }
+      catch (IOException e){
+         System.out.println("RULES CANNOT OPEN RECORD FILES!");
+      }
+   }
+   
+   public String winMessage(){
+      StringBuilder s = new StringBuilder("Statistics:\nFor this game:\n");
+      try{
+         s.append(global.getStats());
+         s.append("\n\nOver all games:\n");
+         s.append(current.getStats());
+      }
+      catch (IOException e){
+         System.out.println("RULES CANNOT OPEN RECORD FILES!");
+      }
+      return s.toString();
+   }
+
+
 //-------------------------------------------------------------------------
    
    public ArrayList<Move> getTargets(Board b, Pawn p, Space s, int n){

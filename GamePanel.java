@@ -4,7 +4,7 @@ import javax.swing.*;
 
 public class GamePanel extends JPanel{
 
-   public static final Color BACKGROUND_COLOR = Color.pink;
+   public static final Color BACKGROUND_COLOR = new Color(0,255,255);
    public static final int NUMBER_PLAYERS = 4;
    public static final int BORDER_THICKNESS = 4;
    
@@ -14,6 +14,7 @@ public class GamePanel extends JPanel{
    public static final String OK_TEXT = "OK";
    public static final String SWAP_TEXT = "SWAP";
    public static final String BUMP_TEXT = "BUMP";
+   public static final String WIN_TEXT = "HOORAY!";
    
    public static final String AMBIGUITY_TEXT = "You may either swap your selected pawn " +
                                                "with the opponent pawn or bump the enemy pawn.";
@@ -33,6 +34,7 @@ public class GamePanel extends JPanel{
          private JButton okButton;
          private JButton swapButton;
          private JButton bumpButton;
+         private JButton winButton;
    
    
    public GamePanel(Game g){
@@ -40,10 +42,10 @@ public class GamePanel extends JPanel{
          game = g;
       
          UIPanel = new JPanel();
-         UIPanel.setBackground(Color.pink);
+         UIPanel.setBackground(BACKGROUND_COLOR);
             
             playerPanel = new JPanel();
-            playerPanel.setBackground(Color.green);
+            playerPanel.setBackground(BACKGROUND_COLOR);
                ImageIcon image;
                portraits = new JLabel[game.getPlayers().size()];
                for (int i = 0; i < game.getPlayers().size(); i++){
@@ -54,13 +56,13 @@ public class GamePanel extends JPanel{
                portraits[0].setBorder(BorderFactory.createLineBorder(Color.black));
                
             cardPanel = new JPanel();
-            cardPanel.setBackground(Color.red);
+            cardPanel.setBackground(BACKGROUND_COLOR);
                image = new ImageIcon("card.jpg");
                JLabel cardLabel = new JLabel("", image, JLabel.CENTER);
                cardPanel.add(cardLabel, BorderLayout.CENTER );
             
             messagePanel = new JPanel();
-            messagePanel.setBackground(Color.white);
+            messagePanel.setBackground(BACKGROUND_COLOR);
                messageTextArea = new JTextArea("Hello World. Where is task force 47. The world wonders.",
                                                 MESSAGE_HEIGHT, MESSAGE_WIDTH);
                messageTextArea.setEditable(false);
@@ -69,14 +71,18 @@ public class GamePanel extends JPanel{
                messagePanel.add(messageTextArea);
             
             buttonPanel = new JPanel();
-            buttonPanel.setBackground(Color.blue);
+            buttonPanel.setBackground(BACKGROUND_COLOR);
                okButton = new JButton(OK_TEXT);
                swapButton = new JButton(SWAP_TEXT);
                bumpButton = new JButton(BUMP_TEXT);
+               winButton = new JButton(WIN_TEXT);
             buttonPanel.add(okButton);
             buttonPanel.add(bumpButton);                    
             buttonPanel.add(swapButton);
-         
+            buttonPanel.add(winButton);
+            //buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.PAGE_AXIS));
+            buttonPanel.setLayout(new GridLayout(2,1));
+                     
          UIPanel.add(playerPanel);
          UIPanel.add(cardPanel);
          UIPanel.add(messagePanel);
@@ -85,7 +91,7 @@ public class GamePanel extends JPanel{
       
       
       add(UIPanel);      
-      setBackground(Color.black);
+      setBackground(BACKGROUND_COLOR);
       setSize(600,600);
       update();
       
@@ -104,6 +110,20 @@ public class GamePanel extends JPanel{
       return bumpButton;
    }
 
+   public JButton getWinButton(){
+      return winButton;
+   }
+
+
+   public void gameWon(){
+      buttonPanel.removeAll();
+      JLabel label = new JLabel("The game is over!");
+      label.setFont(new Font("Serif", Font.BOLD, 16));
+      buttonPanel.add(label);
+      buttonPanel.add(winButton);
+      setMessage("The game is over!");
+   }
+
    public void ambiguityQuery(){
       buttonPanel.removeAll();
       buttonPanel.add(swapButton);
@@ -111,9 +131,13 @@ public class GamePanel extends JPanel{
       appendMessage("You have a choice between swapping or bumping the targeted pawn.");
    }
    
-   public void okToProceed(){
+   public void okToProceed(String message){
       buttonPanel.removeAll();
+      JLabel label = new JLabel(message);
+      label.setFont(new Font("Serif", Font.BOLD, 16));
+      buttonPanel.add(label);
       buttonPanel.add(okButton);
+         //buttonPanel.add(winButton);
    }
 
    public void clearMessage(){
@@ -170,7 +194,7 @@ public class GamePanel extends JPanel{
 
    //TEST---------------------------------------------------------------------
   
-   
+   /*
    public static void main(String [ ] args){
       GameController2 g = new GameController2();
      
@@ -188,7 +212,7 @@ public class GamePanel extends JPanel{
       
       
    } // end of main
-
+*/
 
 
 }

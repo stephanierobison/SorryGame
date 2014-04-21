@@ -10,13 +10,16 @@ public class GameController2{
    private GamePanel gamePanel;
    
    private boolean aiThinking;
+   private Move aiMove;
+   
+   boolean gameOver;
    
    // Default 4 players, simple rules and board.
-   public GameController2(){
+   public GameController2(ArrayList<Player> p){
       // Make the Players
-      ArrayList<Player> p = new ArrayList<Player>();
-      p.add(new Player(Color.red, "PLAYER 1", "player1.jpg", true));
-      p.add(new Player(Color.blue, "PLAYER 2", "player2.jpg", true));
+//      ArrayList<Player> p = new ArrayList<Player>();
+  //    p.add(new Player(Color.red, "PLAYER 1", "player1.jpg", true));
+    //  p.add(new Player(Color.blue, "PLAYER 2", "player2.jpg", true));
       //p.add(new Player(Color.yellow));
       //p.add(new Player(Color.green));      
       
@@ -41,39 +44,66 @@ public class GameController2{
    }
    
    private void startTurn(){
+      aiThinking = false;
       
       Color winColor = game.winner();
       if (winColor != null){
-         System.out.println("SOMEONE ALREADY WON!");
+         //System.out.println("SOMEONE ALREADY WON!");
+         gameOver = true;
+         gamePanel.gameWon();
+         return;
       }
       
       gamePanel.update();
       
       // set up first move
-      if (!game.isCurrentPlayerHuman()){
-         aiThinking = true;
-         aiTurn();   // AI Turns are driven by methods
+      if (game.getMoveablePawns().size() == 0){ // ...unless player can't do anything
+            //gamePanel.appendMessage("You cannot move and must forfeit your turn.");
+            gamePanel.okToProceed("Player cannot move and must forfeit their turn.");
       }
       else{
-         aiThinking = false; // Human player turns are driven by events...
-         if (game.getMoveablePawns().size() == 0){ // ...unless they can't do anything
-            gamePanel.appendMessage("You cannot move and must forfeit your turn.");
-            gamePanel.okToProceed();
+         if (!game.isCurrentPlayerHuman()){
+            //System.out.println("AI Player Detected");
+            aiThinking = true;
+            aiTurn();   // AI Turns are driven by methods
+         }
+         else{
+            aiThinking = false; // Human player turns are driven by events
          }
       }
    }
    
    
    private void aiTurn(){
-   
-   
-   }
-   
-   private void aiMove(){
+      ArrayList<Pawn> moveablePawns = game.getMoveablePawns();
+      int i = 0;
+      Move myMove = null;
+      // take first legitimate in character move;
+      while ((myMove == null) && (i < moveablePawns.size())){
+         myMove = AIRules.play(game.getCurrentPlayer(),
+                               game.getAllTargets(moveablePawns.get(i)));
+        
+         i++; 
+      } 
+      if (i >= moveablePawns.size())
+         i--;
+                                 
+      // if no in character moves then just move the first
+      // moveable pawn randomly
+      if (myMove == null){
+         myMove = AIRules.playCrazy(game.getCurrentPlayer(), game.getAllTargets(moveablePawns.get(0)));
+         boardPanel.selectPawn(moveablePawns.get(0));
+      }
+      else{
+         boardPanel.selectPawn(moveablePawns.get(i));
+      }
+      aiMove = myMove;
       
-      aiThinking = false;
+      gamePanel.okToProceed(game.getCurrentPlayer().getName() + " has chosen their move.");
+   
    }
    
+  
    
    public Game getGame(){
       return game;
@@ -119,6 +149,9 @@ public class GameController2{
        }
         
        public void mousePressed(MouseEvent e) {
+            
+            if (gameOver) return; // GUARD STATEMENT - IGNORE CLICKS AFTER VICTORY
+            
             //System.out.println("CLICK");
            // Get grid coords of mouse click and clicked on space if applicable
            int clickedX = boardPanel.getGridX(e.getX());
@@ -188,7 +221,7 @@ public class GameController2{
            }// END IF LEFT CLICK
            
            // IF RIGHT CLICK
-           else if (SwingUtilities.isRightMouseButton(e)){ 
+           else if (SwingUtilities.isRightMouseButton(e) && !aiThinking){ 
                // right click always deselects one "level" of stuff in boardpanel
                if (boardPanel.isSpaceSelected()){
                      boardPanel.deselectSpace();
@@ -214,7 +247,18 @@ public class GameController2{
          
          if (action.equals(GamePanel.OK_TEXT)){
             if (aiThinking){
-            
+               game.getRules().move(boardPanel.getSelectedPawn(), 
+                                  aiMove.getTarget(), 
+                                  aiMove.getMove());
+               boardPanel.deselectPawn();
+               if (aiMove.getChain() != null){ // A chained multimove doesn't end the player's turn
+                           game.setMoves(new int[] {aiMove.getChain().intValue()});
+                           aiTurn();
+               }
+               else{
+                  game.nextTurn();  // but most moves simply end the player's turn
+                  startTurn();
+               }
             }
             else{
                game.nextTurn();
@@ -257,13 +301,20 @@ public class GameController2{
    
    }// end of class ButtonListener
    
+   
+   
+   
    //TEST---------------------------------------------------------------------
   
    
    public static void main(String [ ] args){
       Scanner scanner = new Scanner(System.in);
       
-      GameController2 g = new GameController2();
+      ArrayList<Player> p = new ArrayList<Player>();
+      p.add(new Player(Color.red, "PLAYER 1", "player1.jpg", AIRules.HUMAN));
+      p.add(new Player(Color.blue, "PLAYER 2", "player2.jpg", AIRules.HUMAN));
+      
+      GameController2 g = new GameController2(p);
      
       JFrame x = new JFrame();
       x.setTitle("");  // name the window
