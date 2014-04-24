@@ -2,10 +2,20 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import java.io.IOException;
+import java.util.*;
+import java.net.*;
+import java.security.*;
 
 public class PlayerPanel extends JPanel {
 
    public static final String PORTRAIT_LIST_FILE = "portraits.txt";
+   public static final String[] PORTRAITS = {"AA.jpg",
+                                             "AB.jpg",
+                                             "AC.jpg",
+                                             "AD.jpg",
+                                             "AF.jpg",
+                                             "AG.jpg",
+                                             "AH.jpg"};
    public static final int NAME_MAX = 20;
    
    private Color color;
@@ -21,7 +31,7 @@ public class PlayerPanel extends JPanel {
       private int portraitListCounter;
    private String portrait;
    
-   private JComboBox playerTypeBox;
+   private JComboBox<String> playerTypeBox;
    
    public PlayerPanel(Color c){
       super();
@@ -45,15 +55,12 @@ public class PlayerPanel extends JPanel {
       rightPortraitButton.addActionListener(new ButtonListener());
             
       ReadFile reader = new ReadFile(PORTRAIT_LIST_FILE);
-      portraitListCounter = 0;
-      try{
-         portraitList = reader.getData();
-      }
-      catch (IOException e){
-         System.out.println("ERROR! Did not read portrait file correctly.");      
-     }
+
+      portraitList = PORTRAITS;
       //portraitDisplay = new JLabel("", image, JLabel.CENTER);
       portraitDisplay = new JLabel("", JLabel.CENTER);
+      Random r = new Random();
+      portraitListCounter = r.nextInt(portraitList.length);
       updatePortrait();   
       tempPanel.setLayout(new BorderLayout());
          JPanel miniPanel = new JPanel();
@@ -78,7 +85,7 @@ public class PlayerPanel extends JPanel {
       
       
       tempPanel = new JPanel();
-      playerTypeBox = new JComboBox(AIRules.DESCRIPTIONS);
+      playerTypeBox = new JComboBox<String>(AIRules.DESCRIPTIONS);
       tempPanel.add(playerTypeBox);
       tempPanel.setBackground(color);
       add(tempPanel);
@@ -89,9 +96,9 @@ public class PlayerPanel extends JPanel {
    
    
    private void updatePortrait(){
-      
       ImageIcon image = new ImageIcon(portraitList[portraitListCounter]);
-      portraitDisplay.setIcon(image);
+      if (image != null) 
+         portraitDisplay.setIcon(image);
    }
    
    public Player generatePlayer(){

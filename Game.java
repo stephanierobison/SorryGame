@@ -28,7 +28,7 @@ public class Game{
    
    // Mutates state to get next turn
    public void nextTurn(){
-      rules.incTurns();
+      //rules.incTurns();
       currentPlayerIndex++;
       currentPlayerIndex = currentPlayerIndex % players.size();
       
@@ -36,7 +36,7 @@ public class Game{
       moves = Deck.CARD_VALUES[currentCard]; // !!!!!!!!!!!!!! REPLACE !!!!!!!!!!!!!!!!!!
       //moves = new int[] {1, -1, -11, 11, Ruleset.ELEVEN_SWAP, Ruleset.START_OUT}; // Replace with call to Deck
 //      moves = new int[] {Ruleset.SEVEN, Ruleset.START_OUT}; // Replace with call to Deck
-      // moves = new int[] {-4, -1, 1, 2, 5, 10, 20, Ruleset.START_OUT};
+       moves = new int[] {-4, -1, 1, 2, 5, 10, 20, Ruleset.START_OUT};
       /*
       System.out.println(getCurrentPlayer().getColor().toString() + 
                                        "PLAYER'S TURN\n============================");

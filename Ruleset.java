@@ -32,14 +32,14 @@ public abstract class Ruleset{
 //*************************************************************************   
    
    public Ruleset(){
-      try{
+     /* try{
          global = new FileHandler(GLOBAL_RECORD);
          current = new FileHandler(CURRENT_RECORD); 
          current.clear();        
       }
       catch (IOException e){
          System.out.println("RULES CANNOT OPEN RECORD FILES!");
-      }
+      }*/
    
    }
    

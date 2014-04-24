@@ -1,2 +1,7 @@
-player1.jpg
-player2.jpg
+AA.jpg
+AB.jpg
+AC.jpg
+AD.jpg
+AF.jpg
+AG.jpg
+AH.jpg

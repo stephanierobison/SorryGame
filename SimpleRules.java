@@ -70,11 +70,11 @@ public class SimpleRules extends Ruleset{
       // bumping them
       if (move == Ruleset.ELEVEN_SWAP){
          p.swapWith(p2);
-         incSwaps();
+         //incSwaps();
       }
       else if(!s.isEmpty() && (s.getToken() instanceof Pawn)){ // BUMP!
          p2.goHome();
-         incBumps();
+         //incBumps();
          
       }
       p.moveTo(s); // redundant for eleven move but OK
@@ -89,7 +89,7 @@ public class SimpleRules extends Ruleset{
            for (int i = 0; i < slideTargets.size(); i++){ 
                if (!slideTargets.get(i).isEmpty()){
                   slideTargets.get(i).getPawn().goHome();
-                  incBumps();
+                  //incBumps();
                }
            }
            // send pawn to end of slide

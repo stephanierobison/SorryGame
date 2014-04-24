@@ -1,6 +1,9 @@
+import javax.imageio.*;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.*;
 import java.util.*;
+import java.io.*;
 
 public class BoardPanel extends JPanel{
 //*************************************************************************
@@ -12,11 +15,21 @@ public class BoardPanel extends JPanel{
    private final static double FILL_SCALE = 0.75; // MUST BE > 0 and < 1
 
    private final static Color DEFAULT_TOKEN_COLOR = Color.pink;
-   private final static Color VALID_TARGET_COLOR = Color.pink;
+   private final static Color VALID_TARGET_COLOR = Color.black;
+
+
 
 //*************************************************************************
 // INSTANCE VARIABLES
 //************************************************************************* 
+
+   private BufferedImage bgImg;
+    private BufferedImage r;
+     private BufferedImage b;
+      private BufferedImage y;
+       private BufferedImage g;
+
+
    /** 
       Main internal state variable. When NULL no pawn is selected
       and selectABLE pawns should be shown. Otherwise a Pawn is
@@ -53,6 +66,18 @@ public class BoardPanel extends JPanel{
       this.game = game;
       NUMBER_COLUMNS = game.getBoard().COLUMNS;
       NUMBER_ROWS = game.getBoard().ROWS;
+      
+      bgImg = null;
+      try{
+         bgImg = ImageIO.read(new File("board.jpg"));
+         r = ImageIO.read(new File("red.jpg"));
+         b = ImageIO.read(new File("blue.jpg"));
+         y = ImageIO.read(new File("yellow.jpg"));
+         g = ImageIO.read(new File("green.jpg"));
+      }
+      catch (IOException e){
+         System.out.println("COULD NOT READ BOARD PANEL IMAGES!");
+      }
       
    } 
 //-------------------------------------------------------------------------
@@ -142,6 +167,15 @@ public class BoardPanel extends JPanel{
 		//	NEEDS	TO	CHANGE
 		setBackground(Color.gray);
 		
+      g.drawImage(bgImg,
+                0,
+                0,
+                panelX,
+                panelY,
+                null);
+
+      
+      
       // Draw all components in Z-Axis Order
       
       /*
@@ -162,7 +196,7 @@ public class BoardPanel extends JPanel{
       */
       
       //DRAW SPACES ????? TEST ONLY??? SEE HOW IT LOOKS....
-      ArrayList<Space> allSpaces = game.getBoard().getAllSpaces();
+/*      ArrayList<Space> allSpaces = game.getBoard().getAllSpaces();
       for (int i = 0; i < allSpaces.size(); i++){
             int gridX = allSpaces.get(i).getX();
             int gridY = allSpaces.get(i).getY();
@@ -173,7 +207,7 @@ public class BoardPanel extends JPanel{
             allSpaces.get(i).drawMe(g, xLow, yLow, xHigh, yHigh);         
       }
       
-      
+  */    
       // DO USING INSTANCE VARIABLES TO REDUCE ON THE FLY COMPUTATION?
       	  
 
