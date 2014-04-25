@@ -1,18 +1,14 @@
 import java.util.*;
-import java.io.IOException;
-
+/**
+   The Ruleset describes the interactions between game elements.
+   It is especially concerned with the movement of pawns around 
+   the board via both direct movement and special cards.
+*/
 public abstract class Ruleset{
 //*************************************************************************
 // CONSTANTS
 //*************************************************************************
-   
-   public final static String GLOBAL_RECORD = "global.txt";
-   public final static String CURRENT_RECORD = "current.txt";
-   
-   private FileHandler global;
-   private FileHandler current;
-   
-   // Trait Values
+   // Space Trait Values
    public static final int NO_TRAIT = 0; 
    public static final int START = 1;
    public static final int HOME = 2;
@@ -26,69 +22,12 @@ public abstract class Ruleset{
    public static final int SORRY_SWAP = -1003;
    public static final int ELEVEN_SWAP = -1004;
    
-  // public static final int[] CARD_PROPERTIES = {-100,-200};
 //*************************************************************************
 // PUBLIC METHODS
 //*************************************************************************   
-   
-   public Ruleset(){
-     /* try{
-         global = new FileHandler(GLOBAL_RECORD);
-         current = new FileHandler(CURRENT_RECORD); 
-         current.clear();        
-      }
-      catch (IOException e){
-         System.out.println("RULES CANNOT OPEN RECORD FILES!");
-      }*/
-   
-   }
-   
-   public void incTurns(){
-      try{
-         global.incTurns();
-         current.incTurns();
-      }
-      catch (IOException e){
-         System.out.println("RULES CANNOT OPEN RECORD FILES!");
-      }
-   }
-
-   public void incSwaps(){
-      try{
-         global.incSwaps();
-         current.incSwaps();
-      }
-      catch (IOException e){
-         System.out.println("RULES CANNOT OPEN RECORD FILES!");
-      }
-   }   
-
-   public void incBumps(){
-      try{
-         global.incBumps();
-         current.incBumps();
-      }
-      catch (IOException e){
-         System.out.println("RULES CANNOT OPEN RECORD FILES!");
-      }
-   }
-   
-   public String winMessage(){
-      StringBuilder s = new StringBuilder("Statistics:\nFor this game:\n");
-      try{
-         s.append(global.getStats());
-         s.append("\n\nOver all games:\n");
-         s.append(current.getStats());
-      }
-      catch (IOException e){
-         System.out.println("RULES CANNOT OPEN RECORD FILES!");
-      }
-      return s.toString();
-   }
-
-
 //-------------------------------------------------------------------------
-   
+   /** Handle method for overloaded getTargets: permits initial call
+   function to simply reference the starting number of moves. */
    public ArrayList<Move> getTargets(Board b, Pawn p, Space s, int n){
       return getTargets(b, p, s, n, n);   
    }
@@ -108,7 +47,7 @@ public abstract class Ruleset{
      
    */
    // NOTE TO SELF: should probably make iterative somehow for speed..
-   private ArrayList<Move> getTargets(Board b, Pawn p, Space s, int n, int x){// is just records starting n
+   private ArrayList<Move> getTargets(Board b, Pawn p, Space s, int n, int x){// x is just recording starting n
       ArrayList<Move> result = new ArrayList<Move>();
       ArrayList<Space> neighbors;   // neighbors of s
       ArrayList<Move> neighborsTargets;  // valid targets of neighbors of neighbors of s    
@@ -178,7 +117,11 @@ public abstract class Ruleset{
    */
    abstract boolean containsAmbiguousMove(ArrayList<Move> moves, Space s);
 //-------------------------------------------------------------------------
-
+   /**
+      Handles movement which cannot be described by a recursive walk through
+      the Space graph.
+   */
    protected abstract ArrayList<Move> getSpecialTargets(Board b, Pawn p, Space s, int n);
+//-------------------------------------------------------------------------
 
 }// end of ruleset

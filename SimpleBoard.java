@@ -9,8 +9,11 @@ import java.awt.*;
    with the SimpleRules extension of
    the Ruleset object.
    
-   FOR NOW IS JUST A TRACK AROUND THE
-   EDGE OF THE BOARD.
+   THE CURRENT MAKE METHOD IS INSANE.
+   BUT IT HAS BEEN THOUROUGHLY TESTED
+   AND WORKS. IT SHOULD BE REFACTORED
+   BUT AT THE MOMENT IT IS A LOWer PRIORITY
+   THAN OTHER THINGS.
 */
 
 public class SimpleBoard extends Board{
@@ -30,23 +33,12 @@ public class SimpleBoard extends Board{
       super(r,c);
       rules = new SimpleRules();      
    }
-  
-  /* public SimpleBoard(){
-      ROWS = 16;
-      COLUMNS = 16;
-      N = (2 * ROWS) + (2 * COLUMNS) - 4;
-      spaces = new ArrayList<Space>();
-      make();
-    }*/
-    /*public SimpleBoard(int rows, int columns){
-      super(rows, columns);
-    }*/
+ 
 //*************************************************************************
-// PRIVATE METHODS
+// METHODS
 //*************************************************************************   
    /*
-     At this point the default board is hard coded manually,
-     not generated procedurally. 
+     Makes the adjacency list representing the board.
    */   
    protected void make(){
       // make spaces and add forwards links

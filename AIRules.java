@@ -1,28 +1,33 @@
 import java.util.*;
 
+/**
+   AIRules is a static set of variables and methods designed to 
+   service decision requests. Its methods are all filters of one form
+   of another which narrow down a set of possible move based on the
+   AI's personality. This is intended to model some semblence of 
+   "Artificial Intelligence".
+*/
 
 public class AIRules{
-
-
+//*************************************************************************
+// CONSTANTS
+//*************************************************************************
+   // Special Values and Descriptions for Humans and Various Types of AI
    public static final int HUMAN = 0;
    public static final int NICE = 1;
    public static final int MEAN = 2;
    public static final int CRAZY = 3;
    public static final String[] DESCRIPTIONS = {"HUMAN", "NICE AI", "MEAN AI", "CRAZY AI"};
    
-   public static final String[] NAMES = {"Namor", "Mer-man", "Aquaman", "Black Manta", "Mermaid Man",
-                                         "Barnacle Boy", "Ariel", "Ursula", "Neptune", "Poseiden",
-                                         "Charybdis", "Scylla", "Calypso", "Medea", "Kraken", 
-                                         "Blackbeard", "Davy Jones", "Jolly Roger", "Jacques Cousteau"};
-   
-   
-   public static String randomName(){
-      Random r = new Random();
-      int i = r.nextInt(NAMES.length);
-      return NAMES[i];
-   }
 
-   // picks a move from a list
+//*************************************************************************
+// METHODS
+//*************************************************************************
+   /**
+      @param   A list of Moves
+               A Player
+      @return  A single move chosen based on the Player's personality
+   */
    public static Move play(Player p, ArrayList<Move> moves){
       
       if (moves.size() <= 0) return null; // GUARD: Should never happen
@@ -36,7 +41,8 @@ public class AIRules{
       if (safeMoves.size() > 0)
          moves = safeMoves;   // by default ALL ai's prefer to make their guys safe
       
-      
+      // Once the list has been filtered we can send it to a child
+      // algorhim for the final selection
       Move result = null;
       int type = p.getAIType();
       if (type == NICE)
@@ -49,7 +55,7 @@ public class AIRules{
       return result;
    
    }
-
+//-------------------------------------------------------------------------
    public static Move playCrazy(Player p, ArrayList<Move> moves){
       
             if (moves.size() <= 0) return null; // GUARD: Should never happen
@@ -70,8 +76,7 @@ public class AIRules{
       return moves.get(i);
    
    }
-
-
+//-------------------------------------------------------------------------
    private static Move playCrazy(ArrayList<Move> moves){
       
       // A crazy AI just picks a random move
@@ -80,15 +85,22 @@ public class AIRules{
       return moves.get(i);
    
    }
-   
+//-------------------------------------------------------------------------
+   /** A handle for play where isNice = true */   
    private static Move playNice(ArrayList<Move> moves){
       return play(moves, true);   
    }
-   
+//-------------------------------------------------------------------------
+   /** A handle for play where isNice = false */   
    private static Move playMean(ArrayList<Move> moves){
       return play(moves, false);   
    }   
-   
+//-------------------------------------------------------------------------
+   /**
+      Filters the list into subsets of moves which either bump (mean)
+      or don't bump (nice). These subsets are then chosen from randomly
+      to model the described behaviour.
+   */
    private static Move play(ArrayList<Move> moves, boolean isNice){
       ArrayList<Move> niceMoves = new ArrayList<Move>();
       ArrayList<Move> meanMoves = new ArrayList<Move>();
@@ -106,18 +118,16 @@ public class AIRules{
       
       // Choose based on existance of options and character
       if (isNice && (niceMoves.size() > 0)){
-         result = playCrazy(niceMoves);
+         result = playCrazy(niceMoves); // pick a random nice move
       }
       else if (!isNice && (meanMoves.size() > 0)){
-         result = playCrazy(meanMoves);
+         result = playCrazy(meanMoves); // pick a random mean move
       }
-      /* else
-         result = playCrazy(moves);   */
-     
+
       return result;
       
    }
 
 
    
-}
+}// end of AIRules

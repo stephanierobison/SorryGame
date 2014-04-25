@@ -5,6 +5,11 @@ import java.awt.image.*;
 import java.util.*;
 import java.io.*;
 
+/**
+   The BoardPanel is 
+*/
+
+
 public class BoardPanel extends JPanel{
 //*************************************************************************
 // CONSTANTS

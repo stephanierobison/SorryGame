@@ -61,10 +61,9 @@ public abstract class Board{
     }
    
 //*************************************************************************
-// PUBLIC METHODS
+// METHODS
 //*************************************************************************   
 //-------------------------------------------------------------------------
-
 /*   
    For now each different configuration will be hard 
    coded using a make() method. I hope to later
@@ -90,8 +89,7 @@ public abstract class Board{
       return result;
    }
  
-//-------------------------------------------------------------------------
-  
+//-------------------------------------------------------------------------  
    /**
       @param   int   The x coordinate of the desired Space
       @param   int   The y coordinate of the desired Space
@@ -116,9 +114,16 @@ public abstract class Board{
       return result;
    }// end getSpace(int, int)
    
-   //???????????????????????????????????????????????????
-   
-   
+//-------------------------------------------------------------------------
+   /**
+      @param   String   The Tag of a desired Space
+      @return  Space    The last Space in the adjacency list
+                        with the desired tag, NULL
+                        otherwise.
+      
+      Note that this method implicitly assumes that Space
+      objects will e given unique tags.
+   */      
       public Space getSpace(String s){
       Space result = null;
       Space currentSpace;
@@ -132,11 +137,18 @@ public abstract class Board{
       return result;
    }// end getSpace(String)
    
-   
+//-------------------------------------------------------------------------   
+   /**
+      @param   int                A Space attribute
+      @return  ArrayList<Space>   An array containing all of the Map Spaces
+                                  possesing  the given trait
+      
+
+   */     
    public ArrayList<Space> getTypeOfSpaces(int trait){
       ArrayList<Space> result = new ArrayList<Space>();
       Space currentSpace;
-      for (int i = 0; i < spaces.size(); i++){
+      for (int i = 0; i < spaces.size(); i++){  // simple linear scan
         currentSpace = spaces.get(i);
         if (currentSpace.getTrait() == trait)
           result.add(currentSpace);   
@@ -144,12 +156,20 @@ public abstract class Board{
       
         return result;
    }
-   
+//-------------------------------------------------------------------------   
+   /**
+      @param   int                A Space attribute
+      @param   color                A Space trait color
+      @return  ArrayList<Space>   An array containing all of the Map Spaces
+                                  possesing  the given trait AND trait color
+      
+
+   */     
    public ArrayList<Space> getTypeOfSpaces(int trait, Color c){
       ArrayList<Space> result = new ArrayList<Space>();
       ArrayList<Space> x = getTypeOfSpaces(trait);
       Space currentSpace;
-      for (int i = 0; i < x.size(); i++){
+      for (int i = 0; i < x.size(); i++){ /// linear scan again
         currentSpace = x.get(i);
         if (currentSpace.getTraitColor().toString().equals(c.toString()))
           result.add(currentSpace);   
@@ -176,7 +196,11 @@ public abstract class Board{
       return result;
    }// end getTokens()
    
-   
+//-------------------------------------------------------------------------
+   /**
+      @return  ArrayList<Pawn>  All of the Pawn objects "on" the
+                                 Space objects in this Board.
+   */   
    public ArrayList<Pawn> getPawns(){
       ArrayList<Pawn> result = new ArrayList<Pawn>();
       Pawn p;
@@ -189,11 +213,17 @@ public abstract class Board{
       }
       return result;
    }
-   
+//-------------------------------------------------------------------------   
+      /**
+         @param   Color             The color of a given player's pawns   
+         @return  ArrayList<Pawn>   All of the Pawn objects "on" the
+                                    Space objects in this Board who also
+                                    have lavender eyes
+      */  
       public ArrayList<Pawn> getPawns(Color c){
       ArrayList<Pawn> result = new ArrayList<Pawn>();
       ArrayList<Pawn> ps = getPawns();
-      for (int i = 0; i < ps.size(); i++){
+      for (int i = 0; i < ps.size(); i++){   // Linear scan
          if (ps.get(i).getColor().toString().equals(c.toString())){
             result.add(ps.get(i));
          }
@@ -219,18 +249,23 @@ public abstract class Board{
    }// end of toString()
 
 //-------------------------------------------------------------------------
-
-
+   /**
+      @return ALL Spaces in the that bold.
+   */
    public ArrayList<Space> getAllSpaces(){
       return spaces;
    }
-   
+//-------------------------------------------------------------------------   
+   /**
+      @return All pawns on "unsafe" areas ie Pawns who see their own 
+              Color
+   */
    public ArrayList<Pawn> getUnsafePawns(){
       ArrayList<Token> x = getTokens();
       ArrayList<Pawn> result = new ArrayList<Pawn>();
       Token currentToken;
       Pawn p;
-      for (int i = 0; i < x.size(); i++){
+      for (int i = 0; i < x.size(); i++){ // Still more linear scans
          currentToken = x.get(i);
          if (currentToken instanceof Pawn){
             p = (Pawn)currentToken;
@@ -241,5 +276,5 @@ public abstract class Board{
       }
       return result;
    }
-   
+//-------------------------------------------------------------------------   
 }// end of Board

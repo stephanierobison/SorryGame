@@ -1,34 +1,23 @@
 import java.util.*;
-
-
-
+/**
+   SimpleRules concretely defines the Sorry ruleset for the basic version
+   of Sorry.
+*/
 public class SimpleRules extends Ruleset{
-  
- 
-  
-
-
-//*************************************************************************
-// CONSTRUCTORS
-//*************************************************************************   
-
 //*************************************************************************
 // PUBLIC METHODS
 //*************************************************************************  
-
-
-    
 //-------------------------------------------------------------------------
 /*
    Note that the "passable" and "landable" properties will change based
    on different rulesets and potentiall the internal state of a given
    Ruleset, the considered Space, the Space's Board, or the Space's Game.
-   Hence the abstraction at the top level of inheritance.
+   Hence the abstraction at the top level of inheritance, and the 
+   concreteness here.
 */
 //-------------------------------------------------------------------------
    /**
-      Until space special properties are implemented all Spaces
-      are traversable.
+      All Spaces are traversable UNLESS they are someone else's safe zone.
    
       @return boolean   TRUE if the space can currently be traversed using
                         the current rules, FALSE otherwise.
@@ -43,7 +32,7 @@ public class SimpleRules extends Ruleset{
    }
 //-------------------------------------------------------------------------
    /**
-      For now, a Space must be empty to be landed on.
+      For now, Space must be empty or contain an enemy pawn to be landed on.
       
       @return boolean   TRUE if the space can currently be landed on using
                         the current rules, FALSE otherwise.
@@ -62,7 +51,13 @@ public class SimpleRules extends Ruleset{
       return result;
    }
 //-------------------------------------------------------------------------
-   //handles consequences of moving a pawn somewhere
+   /**
+      Handles consequences of moving a pawn somewhere. This involves:
+         1. the actual movement
+         2. bumps
+         3. swaps
+         4. sliding 
+   */
    public void move(Pawn p, Space s, int move){
       Pawn p2 = s.getPawn();   
       // Special Cases
@@ -99,14 +94,18 @@ public class SimpleRules extends Ruleset{
       
          
    }
-   
-   
+//-------------------------------------------------------------------------
+   /**
+      As getTargets however it is specifically designed to handle the odd
+      card cases via extra checking and rules. See sections for details.
+   */   
    public ArrayList<Move> getSpecialTargets(Board b, Pawn p, Space s, int n){
       ArrayList<Move> result = new ArrayList<Move>();
+      // The only move provided by START_OUT are from start Spaces to start exits
+      // BUT there is no stipulation on how far apart they must be.
       if (n == START_OUT){
          if (p.whereAmI().getTrait() == START){
             ArrayList<Space> allExits = b.getTypeOfSpaces(START_EXIT, p.getColor());
-            //result.addAll(b.getTypeOfSpaces(START_EXIT, p.getColor()));
             for (int i = 0; i < allExits.size(); i++){
                Pawn squatter = allExits.get(i).getPawn();
                if ((allExits.get(i).isEmpty()) ||
@@ -117,6 +116,11 @@ public class SimpleRules extends Ruleset{
          }
       }
       // 77777777777777777777777777777777777777777777777777777777777
+      // Tne seven move is checked by making sure that the residual of
+      // a partial move can be used and by using the chain Move attribute
+      // for bookeeping
+      // NOTE that the algorithm as is does not properly account for
+      // pawns interfereing with eachother's moves 
       else if (n == SEVEN){
          result.addAll(getTargets(b,p,s,7)); // can always try vanilla 7
 
@@ -128,7 +132,8 @@ public class SimpleRules extends Ruleset{
             if ((tokens.get(i) instanceof Pawn)&&
                 (tokens.get(i) != p)){ // check type before casting
                currentPawn = (Pawn)tokens.get(i);
-               if (currentPawn.getColor().toString().equals(p.getColor().toString())) // check color before adding
+               if ((currentPawn.getColor().toString().equals(p.getColor().toString())) && // check color before adding...
+                   (currentPawn != p)) // AND Check for duplicates
                   otherAlliedPawns.add(currentPawn);
             } 
          }
@@ -140,10 +145,10 @@ public class SimpleRules extends Ruleset{
             intermediateResult = new ArrayList<Move>();
             for (int j = 0; j < otherAlliedPawns.size(); j++){
                currentAlly = otherAlliedPawns.get(j);
-               intermediateResult.addAll(getTargets(b, currentAlly, currentAlly.whereAmI(), 7 - i));
+               intermediateResult.addAll(getTargets(b, currentAlly, currentAlly.whereAmI(), 7 - i));// possible future moves
             }
-            if (intermediateResult.size() > 0){
-               intermediateResult = getTargets(b,p,s,i);
+            if (intermediateResult.size() > 0){          // could ally move after we did?  
+               intermediateResult = getTargets(b,p,s,i);    // if so then count as an affirmative
                for (int k = 0; k < intermediateResult.size(); k++)
                   intermediateResult.get(k).setChain(7 - i); 
                result.addAll(intermediateResult); 
@@ -152,6 +157,7 @@ public class SimpleRules extends Ruleset{
          
          return result;
       }
+      // A Sorry swap starts in the current player's start and ends on an undafe enemy pawn
       else if ((n == SORRY_SWAP) && (p.whereAmI().getTrait() == START)){
          ArrayList<Pawn> victims = b.getUnsafePawns();
          for (int i = 0; i < victims.size(); i++){
@@ -159,6 +165,7 @@ public class SimpleRules extends Ruleset{
                result.add(new Move (victims.get(i).whereAmI(), n));
          }
       }
+      // An eleven swap takes place between unsafe pawns
       else if (n == ELEVEN_SWAP){
          ArrayList<Pawn> victims = b.getUnsafePawns();
          if (victims.contains(p)){ // for eleven swap you must be unsafe too
@@ -172,7 +179,11 @@ public class SimpleRules extends Ruleset{
       return result;
    }
    
-   
+//-------------------------------------------------------------------------
+   /**
+      Checks for the bizarre case where we drew an eleven and we are 11 space from an enemy unsafe Pawm.
+      
+   */   
    public boolean containsAmbiguousMove(ArrayList<Move> moves, Space s){
       boolean swap = false;
       boolean move = false;
@@ -196,7 +207,7 @@ public class SimpleRules extends Ruleset{
             }
          }
       }
-      System.out.println("Swap = " + Boolean.toString(swap) + "\nMove = " + Boolean.toString(move));
+      //System.out.println("Swap = " + Boolean.toString(swap) + "\nMove = " + Boolean.toString(move));
       return (swap && move);
    }
 }// end of ruleset
